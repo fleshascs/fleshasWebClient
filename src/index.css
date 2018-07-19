@@ -90,3 +90,7 @@ html {
   padding: 5px;
   border-radius: 2px;
 }
+
+.chatBox {
+  width: 350px;
+}

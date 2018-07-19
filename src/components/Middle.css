@@ -1,0 +1,23 @@
+.middlebar {
+  flex: 1;
+  height: 100%;
+  overflow: auto;
+  background-image: linear-gradient(
+    -226deg,
+    rgb(245, 248, 251) 0%,
+    rgb(243, 246, 249) 100%
+  );
+  padding-bottom: 50px;
+}
+
+.middlebar::-webkit-scrollbar {
+  width: 0px;
+}
+
+.middlebar::-webkit-scrollbar-track {
+  background: #ffffff2b;
+}
+
+.middlebar::-webkit-scrollbar-thumb {
+  background: rebeccapurple;
+}
