@@ -8,10 +8,6 @@ const Box = styled.div`
 `;
 
 class BoxComponent extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return <Box>{this.props.children}</Box>;
   }

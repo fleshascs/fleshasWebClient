@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { Header, Middle, Right } from "../../components";
+import { Header, Middle, Right, Chat } from "../../components";
 
 const Container = styled.div`
   display: flex;
@@ -27,9 +27,22 @@ class Layout extends Component {
           <Middle>{this.props.children}</Middle>
           <Right />
         </ColumnsWrapper>
+        <Footer>
+          <Chat />
+        </Footer>
       </Container>
     );
   }
 }
 
 export default Layout;
+
+const FooterContainer = styled.div`
+  position: relative;
+`;
+
+class Footer extends Component {
+  render() {
+    return <FooterContainer>{this.props.children}</FooterContainer>;
+  }
+}

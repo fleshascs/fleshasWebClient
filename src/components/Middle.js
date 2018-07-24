@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-//import "./Middle.css";
 import styled from "styled-components";
 
 const Container = styled.div`

@@ -1,32 +1,61 @@
 import React, { Component } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import { Spinner } from "../../components";
+import { Spinner, Avatar } from "../../components";
 //import ServerListItem from "./ServerListItem";
+
+const ShoutboxContainer = styled.div`
+  flex: 1;
+  overflow: auto;
+  padding-top: 10px;
+  padding-right: 10px;
+`;
+const MessgesList = styled.div``;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column
+  flex: 1;
+`;
 
 class ServerList extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      servers: [],
-      servsersLoading: true,
+      messages: [],
+      messagesLoading: true,
       loadingError: false
     };
   }
 
   componentWillMount() {
-    this.requestForServers();
+    this.requestForMessages();
   }
 
-  requestForServers() {
+  scrollToBottom() {
+    console.log("==========messagesEnd===========");
+    //console.log(this.messagesEnd);
+    if (this.messagesEnd) {
+      //{ behavior: "smooth" }
+      this.messagesEnd.scrollIntoView({
+        behavior: "instant",
+        block: "end",
+        inline: "nearest"
+      });
+    }
+  }
+
+  requestForMessages() {
     axios
-      .get("http://185.80.128.99/csserver/")
+      .get(
+        "http://fleshas.lt/infusions/shoutbox_panel/json_get_top10_msg.php?messagesToShow=20"
+      )
       .then(response => {
-        if (response.data.servers) {
+        if (response.data.messages) {
           this.setState({
-            servers: response.data.servers,
-            servsersLoading: false
+            messages: response.data.messages,
+            messagesLoading: false
           });
           return;
         }
@@ -34,7 +63,7 @@ class ServerList extends Component {
       })
       .catch(error => {
         this.setState({
-          servsersLoading: false,
+          messagesLoading: false,
           loadingError: true
         });
       });
@@ -46,22 +75,39 @@ class ServerList extends Component {
       return <div>ivyko klaida!</div>;
     }
 
-    if (this.state.servsersLoading) {
+    if (this.state.messagesLoading) {
       return <div>kraunasi...</div>;
     }
 
     return (
-      <Box>
-        {this.state.servers.map((server, index) => (
-          <ServerListItem
-            id={index + 1 < 10 ? "0" + (index + 1) : index + 1}
-            name={server.name}
-            map={server.map}
-            onlinePlayers={server.online}
-            maxOnlinePlayers={server.maxOnline}
+      <Container>
+        <ShoutboxContainer className="mt-2">
+          <MessgesList>
+            {this.state.messages.map((server, index) => (
+              <ServerListItem
+                name={server.username}
+                avatar={server.avatar}
+                message={server.msg}
+                id={index + 1 < 10 ? "0" + (index + 1) : index + 1}
+                map={server.map}
+                onlinePlayers={server.online}
+                maxOnlinePlayers={server.maxOnline}
+              />
+            ))}
+          </MessgesList>
+          <div
+            ref={el => {
+              this.messagesEnd = el;
+              this.scrollToBottom();
+              console.log("pamparam");
+            }}
+            className="pt-3"
           />
-        ))}
-      </Box>
+        </ShoutboxContainer>
+        <div style={{ height: "100px", border: "1px solid red" }}>
+          lalaalala
+        </div>
+      </Container>
     );
   }
 }
@@ -87,16 +133,6 @@ const ServerMap = styled.div`
 
 const ServerNameContainer = styled.div`
   flex: 1;
-`;
-
-const CircleOnlineStatus = styled.div`
-  background: #42b72a;
-  border-radius: 50%;
-  height: 6px;
-  margin: 0 3px 1px 0;
-  vertical-align: middle;
-  width: 6px;
-  display: inline-block;
 `;
 
 const SmallDataColumn = styled.div`
@@ -138,6 +174,21 @@ const PlayerListContainer = styled.div`
   z-index: 2;
 `;
 
+const MessageContainer = styled.div`
+  margin-top: 0.3rem;
+  display: flex;
+`;
+
+const Important = styled.div`
+  font-size: 13px;
+  color: rebeccapurple;
+  font-weight: bold;
+`;
+const MessageText = styled.div`
+  font-size: 14px;
+  color: #524e4e;
+`;
+
 class ServerListItem extends Component {
   constructor(props) {
     super(props);
@@ -160,28 +211,19 @@ class ServerListItem extends Component {
 
   render() {
     return (
-      <ServerListItemContainer
-        onMouseEnter={this.showPlayersPanel}
-        onMouseLeave={this.hidePlayersPanel}
-      >
-        <SmallDataColumn>
-          {this.props.id}
-          {this.state.showPlayers ? (
-            <PlayerListContainer>
-              <Spinner />
-            </PlayerListContainer>
-          ) : null}
-        </SmallDataColumn>
-        <ServerNameColumn>
-          <ServerNameContainer>
-            <CircleOnlineStatus /> {this.props.name}
-          </ServerNameContainer>
-          <ServerMap>{this.props.map}</ServerMap>
-        </ServerNameColumn>
-        <SmallDataColumn>
-          {this.props.onlinePlayers}/{this.props.maxOnlinePlayers}
-        </SmallDataColumn>
-      </ServerListItemContainer>
+      <MessageContainer className="ml-2">
+        <Avatar
+          imgUrl={`http://fleshas.lt/images/avatars/${this.props.avatar}`}
+        />
+        <div className="ml-2">
+          <div style={{ display: "flex" }}>
+            <Important style={{ flex: 1 }}>{this.props.name}</Important>
+          </div>
+          <MessageText
+            dangerouslySetInnerHTML={{ __html: this.props.message }}
+          />
+        </div>
+      </MessageContainer>
     );
   }
 }

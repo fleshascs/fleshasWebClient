@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { NavBar } from "../components";
 
 const Container = styled.header`
   color: #fff;
@@ -25,14 +25,7 @@ class Header extends Component {
   render() {
     return (
       <Container>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/profile">proflis</Link>
-          </li>
-        </ul>
+        <NavBar />
       </Container>
     );
   }
