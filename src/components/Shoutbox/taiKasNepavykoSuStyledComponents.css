@@ -1,0 +1,10 @@
+.MessgeLikeButton:not(.HasLikes) {
+  display: none;
+}
+.MessageWrapper:hover > .MessgeLikeButton {
+  display: block;
+}
+
+.hiddeAndTakeSpace {
+  visibility: hidden;
+}

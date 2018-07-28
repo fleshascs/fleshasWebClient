@@ -71,7 +71,7 @@ const Forum = props => (
 
     <LastPost>
       <div style={{ flex: 1 }} />
-      <div class="mr-2">
+      <div className="mr-2">
         <Link to="/profile">
           <Important>{props.lastPostAuthorName}</Important>
         </Link>

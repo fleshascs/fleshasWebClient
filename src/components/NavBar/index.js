@@ -64,10 +64,6 @@ const Links = [
     title: "Profilio pvz",
     to: "/profile",
     gold: true
-  },
-  {
-    title: "Temos pvz",
-    to: "/thread"
   }
 ];
 

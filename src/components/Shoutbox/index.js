@@ -1,8 +1,14 @@
 import React, { Component } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import { Spinner, Avatar } from "../../components";
-//import ServerListItem from "./ServerListItem";
+import { EmojiButton } from "../../components";
+import Message from "./Message";
+import "./taiKasNepavykoSuStyledComponents.css";
+
+//https://bootsnipp.com/snippets/exR5v
+//https://medium.freecodecamp.org/how-to-build-a-chat-application-using-react-redux-redux-saga-and-web-sockets-47423e4bc21a
+//https://stackoverflow.com/questions/37620694/how-to-scroll-to-bottom-in-react
+//https://stackoverflow.com/questions/25974527/scroll-element-into-view-at-bottom-of-page
 
 const ShoutboxContainer = styled.div`
   flex: 1;
@@ -27,6 +33,12 @@ class ServerList extends Component {
       messagesLoading: true,
       loadingError: false
     };
+
+    this.onEmojiSelect = this.onEmojiSelect.bind(this);
+  }
+
+  onEmojiSelect(e) {
+    console.log(e);
   }
 
   componentWillMount() {
@@ -34,12 +46,9 @@ class ServerList extends Component {
   }
 
   scrollToBottom() {
-    console.log("==========messagesEnd===========");
-    //console.log(this.messagesEnd);
     if (this.messagesEnd) {
-      //{ behavior: "smooth" }
       this.messagesEnd.scrollIntoView({
-        behavior: "instant",
+        behavior: "instant", //{ behavior: "smooth" }
         block: "end",
         inline: "nearest"
       });
@@ -84,7 +93,7 @@ class ServerList extends Component {
         <ShoutboxContainer className="mt-2">
           <MessgesList>
             {this.state.messages.map((server, index) => (
-              <ServerListItem
+              <Message
                 name={server.username}
                 avatar={server.avatar}
                 message={server.msg}
@@ -104,8 +113,9 @@ class ServerList extends Component {
             className="pt-3"
           />
         </ShoutboxContainer>
-        <div style={{ height: "100px", border: "1px solid red" }}>
-          lalaalala
+        <div className="mx-3 py-3">
+          <textarea className="w-100 textarea" />
+          <EmojiButton onEmojiClick={this.onEmojiSelect} />
         </div>
       </Container>
     );
@@ -113,133 +123,3 @@ class ServerList extends Component {
 }
 
 export default ServerList;
-
-//--------------------------server list item------------------------------------//
-const ServerListItemContainer = styled.div`
-  display: flex;
-  padding-bottom: 0.5rem;
-  padding-top: 0.5rem;
-  position: relative;
-
-  &:hover {
-    background: #ececec;
-  }
-`;
-
-const ServerMap = styled.div`
-  font-size: 12px;
-  color: #9c9c9c;
-`;
-
-const ServerNameContainer = styled.div`
-  flex: 1;
-`;
-
-const SmallDataColumn = styled.div`
-  text-align: center;
-  font-size: 12px;
-  color: #9c9c9c;
-  -webkit-box-flex: 0;
-  -ms-flex: 0 0 16.666667%;
-  flex: 0 0 16.666667%;
-  max-width: 16.666667%;
-  position: relative;
-  width: 100%;
-  min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
-`;
-
-const ServerNameColumn = styled.div`
-  -ms-flex-preferred-size: 0;
-  flex-basis: 0;
-  -webkit-box-flex: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  max-width: 100%;
-  position: relative;
-  width: 100%;
-  min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
-`;
-
-const PlayerListContainer = styled.div`
-  position: absolute;
-  border-radius: 3px;
-  border: 1px solid #ececec;
-  width: 300px;
-  height: 500px;
-  background-color: #fff;
-  z-index: 2;
-`;
-
-const MessageContainer = styled.div`
-  margin-top: 0.3rem;
-  display: flex;
-`;
-
-const Important = styled.div`
-  font-size: 13px;
-  color: rebeccapurple;
-  font-weight: bold;
-`;
-const MessageText = styled.div`
-  font-size: 14px;
-  color: #524e4e;
-`;
-
-class ServerListItem extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showPlayers: false
-    };
-
-    this.showPlayersPanel = this.showPlayersPanel.bind(this);
-    this.hidePlayersPanel = this.hidePlayersPanel.bind(this);
-  }
-
-  showPlayersPanel() {
-    this.setState({ showPlayers: true });
-  }
-
-  hidePlayersPanel() {
-    this.setState({ showPlayers: false });
-  }
-
-  render() {
-    return (
-      <MessageContainer className="ml-2">
-        <Avatar
-          imgUrl={`http://fleshas.lt/images/avatars/${this.props.avatar}`}
-        />
-        <div className="ml-2">
-          <div style={{ display: "flex" }}>
-            <Important style={{ flex: 1 }}>{this.props.name}</Important>
-          </div>
-          <MessageText
-            dangerouslySetInnerHTML={{ __html: this.props.message }}
-          />
-        </div>
-      </MessageContainer>
-    );
-  }
-}
-
-const BoxContainer = styled.div`
-  box-shadow: rgba(109, 103, 95, 0.22) 1px 3px 6px;
-  position: relative;
-  background: rgb(255, 255, 255);
-
-  & > ${ServerListItemContainer} + ${ServerListItemContainer} {
-    border-top: solid 1px rgba(0, 0, 0, 0.12);
-  }
-`;
-
-class Box extends Component {
-  render() {
-    return <BoxContainer>{this.props.children}</BoxContainer>;
-  }
-}

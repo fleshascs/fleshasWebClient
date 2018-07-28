@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { NavBar } from "../components";
+import { Link } from "react-router-dom";
 
 const Container = styled.header`
   color: #fff;
@@ -14,7 +15,7 @@ const Container = styled.header`
   font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #efefef;
   transition: all 0.3s ease, top 0.2s ease-in-out;
-  min-height: 112px;
+  // min-height: 112px;
 `;
 
 class Header extends Component {
@@ -25,6 +26,15 @@ class Header extends Component {
   render() {
     return (
       <Container>
+        <div>
+          <Link
+            to="/login"
+            className="float-right"
+            style={{ color: "#fff", marginRight: "40px" }}
+          >
+            Prisijungti
+          </Link>
+        </div>
         <NavBar />
       </Container>
     );

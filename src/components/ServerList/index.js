@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { Spinner } from "../../components";
+import OnlinePlayers from "./OnlinePlayers";
 //import ServerListItem from "./ServerListItem";
 
 class ServerList extends Component {
@@ -59,6 +60,7 @@ class ServerList extends Component {
             map={server.map}
             onlinePlayers={server.online}
             maxOnlinePlayers={server.maxOnline}
+            server={server}
           />
         ))}
       </Box>
@@ -159,6 +161,7 @@ class ServerListItem extends Component {
   }
 
   render() {
+    //console.log(this.props.server);
     return (
       <ServerListItemContainer
         onMouseEnter={this.showPlayersPanel}
@@ -167,9 +170,7 @@ class ServerListItem extends Component {
         <SmallDataColumn>
           {this.props.id}
           {this.state.showPlayers ? (
-            <PlayerListContainer>
-              <Spinner />
-            </PlayerListContainer>
+            <OnlinePlayers server={this.props.server} />
           ) : null}
         </SmallDataColumn>
         <ServerNameColumn>

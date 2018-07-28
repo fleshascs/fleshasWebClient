@@ -72,7 +72,7 @@ const BoxHeaderContainer = styled.div`
   border-bottom: 1px solid #e4e7ed;
   border-top: 1px solid #e4e7ed;
   background: #f7f7f7;
-  color: #9278de;
+  color: ${props => props.theme.FORUMS_CATEGORY_HEADER_TEXT_COLOR};
 `;
 
 const BoxHeaderTitle = styled.h4`

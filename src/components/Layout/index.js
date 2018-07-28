@@ -38,6 +38,7 @@ class Layout extends Component {
 export default Layout;
 
 const FooterContainer = styled.div`
+  width: 100%;
   position: relative;
 `;
 

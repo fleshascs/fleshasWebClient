@@ -31,7 +31,7 @@ const AnswersColumn = ViewsColumn.extend``;
 
 const Important = styled.div`
   font-size: 13px;
-  color: rebeccapurple;
+  color: ${props => props.theme.PRIMARY_COLOR};
   font-weight: bold;
 `;
 const NotImportant = styled.div`
@@ -72,7 +72,7 @@ const Thread = props => (
       <Link to="/profile">
         <Avatar imgUrl={props.user.avatar} />
       </Link>
-      <div class="ml-2">
+      <div className="ml-2">
         <Link to="/profile">
           <Important>{props.user.username}</Important>
         </Link>

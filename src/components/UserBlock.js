@@ -45,7 +45,7 @@ const UserMenuWrapper = styled.div`
 
 const Username = styled.div`
   font-size: 13px;
-  color: rebeccapurple;
+  color: ${props => props.theme.PRIMARY_COLOR};
   font-weight: bold;
 `;
 
@@ -92,7 +92,7 @@ const MessagesButtonContainer = styled.div`
   cursor: pointer;
 
   i.active {
-    color: rgb(94, 43, 162);
+    color: ${props => props.theme.PRIMARY_COLOR};
   }
 `;
 

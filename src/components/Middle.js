@@ -21,7 +21,7 @@ const Container = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rebeccapurple;
+    background: ${props => props.theme.PRIMARY_COLOR};
   }
 `;
 

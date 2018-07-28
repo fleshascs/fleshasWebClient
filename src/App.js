@@ -9,11 +9,21 @@ import NotFound from "./Views/NotFound";
 import Thread from "./Views/Thread";
 import Forum from "./Views/Forum";
 import ForumThreads from "./Views/ForumThreads";
+import Login from "./Views/Login";
 
 const theme = {
-  PRIMARY_COLOR: "#663399",
-  AVATAR_HOWER_SHADOW_COLOR: "rgba(102, 51, 153, 0.62)"
+  PRIMARY_COLOR: "#da4848",
+  AVATAR_HOWER_SHADOW_COLOR: "#da4848",
+  CHAT_HEADER_COLOR: "#da4848",
+  FORUMS_CATEGORY_HEADER_TEXT_COLOR: "#da4848"
 };
+
+/* const theme = {
+  PRIMARY_COLOR: "#663399",
+  AVATAR_HOWER_SHADOW_COLOR: "rgba(102, 51, 153, 0.62)",
+  CHAT_HEADER_COLOR: "#647b94",
+  FORUMS_CATEGORY_HEADER_TEXT_COLOR: "#9278de"
+}; */
 
 class App extends Component {
   render() {
@@ -26,6 +36,7 @@ class App extends Component {
             <Route path="/thread" component={Thread} />
             <Route exact path="/forum" component={Forum} />
             <Route path="/forum/:number" component={ForumThreads} />
+            <Route path="/login" component={Login} />
             {/* <Route component={NotFound} /> */}
           </Layout>
         </Router>
