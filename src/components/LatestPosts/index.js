@@ -57,7 +57,7 @@ class ServerList extends Component {
             url="http://www.fleshas.lt"
             user={{
               username: "fleshas.lt",
-              avatar: "http://fleshas.lt/images/avatars/33944[1899].gif"
+              avatar: "http://fleshas.lt/images/avatars/chaga8j.gif"
             }}
             postDate="Vakar"
             threadViews={105}

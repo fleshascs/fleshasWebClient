@@ -1,6 +1,6 @@
 const CONFIG = {
   REMOTE_ROOT: "http://fleshas.lt/",
-  API_ULR: "http://ts.fleshas.lt/api"
+  API_URL: "http://ts.fleshas.lt:9000/api"
 };
 
 export default CONFIG;

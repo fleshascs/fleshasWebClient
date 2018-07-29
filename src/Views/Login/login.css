@@ -78,6 +78,14 @@ https://cssauthor.com/html5-and-css3-login-forms/
   border-color: #9598de;
 }
 
+.input input:focus + .icon {
+  display: none;
+}
+
+.icon .material-icons {
+  color: #a99f9f;
+}
+
 .submit {
   width: 45px;
   height: 45px;

@@ -61,12 +61,29 @@ const Links = [
     to: "/forum"
   },
   {
-    title: "Profilio pvz",
-    to: "/profile",
-    gold: true
+    title: "VIP/Admin/Unban",
+    to: "/forum"
+  },
+  {
+    title: "AmxBans",
+    to: "/forum"
+  },
+  {
+    title: "CS 1.6 Download",
+    to: "/forum"
+  },
+  {
+    title: "Taisyklės",
+    to: "/forum"
   }
 ];
 
+/* ,
+  {
+    title: "Profilio pvz",
+    to: "/profile",
+    gold: true
+  } */
 class NavBar extends Component {
   render() {
     return (

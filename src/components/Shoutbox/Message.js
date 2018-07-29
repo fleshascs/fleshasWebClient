@@ -1,54 +1,20 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { Avatar } from "../../components";
+import { Avatar, Username } from "../../components";
 
 const MessageContainer = styled.div`
   margin-top: 0.3rem;
   display: flex;
 `;
 
-const Important = styled.div`
-  font-size: 13px;
-  color: ${props => props.theme.PRIMARY_COLOR};
-  font-weight: bold;
-`;
 const MessageText = styled.div`
+  flex: 1;
   font-size: 14px;
   color: #524e4e;
 `;
 const MessageWrapper = styled.div`
-width: 100%;
- /*  &::hover > ${MessgeLikeButton} {
-    visibility: visible !important;
-  } */
-`;
-
-const MessgeLikeButton = styled.div`
-  position: relative;
+  display: flex;
   width: 100%;
-  text-align: right;
-
-  /* visibility: hidden; */
-`;
-
-const NumberOfLikes = styled.span`
-  color: #848484;
-`;
-const MaterialLikeIcon = styled.i`
-  padding: 3px;
-  font-size: 16px;
-`;
-const LikesBackground = styled.span`
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 1px 1px 3px 0 #dadde1;
-  color: #8d949e;
-  font-size: 11px;
-  font-weight: normal;
-  line-height: 11px;
-  margin: 0 1px 0 -10px;
-  padding: 2px 4px 2px 2px;
-  cursor: pointer;
 `;
 
 class Message extends Component {
@@ -85,7 +51,7 @@ class Message extends Component {
 
   render() {
     const likes = this.getRandomLikes();
-    const NumberOfLikesClass = likes <= 0 ? "hiddeAndTakeSpace" : "";
+
     return (
       <MessageContainer className="ml-2">
         <Avatar
@@ -93,24 +59,15 @@ class Message extends Component {
         />
         <div className="ml-2 w-100">
           <div style={{ display: "flex" }}>
-            <Important style={{ flex: 1 }}>{this.props.name}</Important>
+            <Username style={{ flex: 1 }} userId={this.props.userId}>
+              {this.props.name}
+            </Username>
           </div>
           <MessageWrapper className="MessageWrapper">
             <MessageText
               dangerouslySetInnerHTML={{ __html: this.props.message }}
             />
-            <MessgeLikeButton
-              className={`MessgeLikeButton ${likes > 0 ? "HasLikes" : ""}`}
-            >
-              <LikesBackground>
-                <MaterialLikeIcon className="material-icons">
-                  😂
-                </MaterialLikeIcon>
-                <NumberOfLikes className={NumberOfLikesClass}>
-                  {likes}
-                </NumberOfLikes>
-              </LikesBackground>
-            </MessgeLikeButton>
+            <LikesButton likes={likes} />
           </MessageWrapper>
         </div>
       </MessageContainer>
@@ -118,4 +75,73 @@ class Message extends Component {
   }
 }
 
+const MaterialLikeIcon = styled.span`
+  padding: 3px;
+  font-size: 16px;
+`;
+
+const MessgeLikeButton = styled.button`
+  position: relative;
+  text-align: right;
+  border: none;
+  background: none;
+  padding: none;
+
+  &:focus {
+    outline: none;
+  }
+
+  /* visibility: hidden; visibility: visible; */
+`;
+
+const NumberOfLikes = styled.span`
+  color: #848484;
+`;
+
+const LikesBackground = styled.span`
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 1px 1px 3px 0 #dadde1;
+  color: #8d949e;
+  font-size: 11px;
+  font-weight: normal;
+  line-height: 11px;
+  margin: 0 1px 0 -10px;
+  padding: 2px 4px 2px 2px;
+  cursor: pointer;
+`;
+
+class LikesButton extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      likes: this.props.likes
+    };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState(prevState => {
+      return { likes: prevState.likes + 1 };
+    });
+  }
+
+  render() {
+    const likes = this.state.likes;
+    const NumberOfLikesClass = likes <= 0 ? "hiddeAndTakeSpace" : "";
+    return (
+      <MessgeLikeButton
+        className={`MessgeLikeButton ${likes > 0 ? "HasLikes" : ""}`}
+        onClick={this.handleClick}
+      >
+        <LikesBackground>
+          <MaterialLikeIcon className="material-icons">😂</MaterialLikeIcon>
+          <NumberOfLikes className={NumberOfLikesClass}>{likes}</NumberOfLikes>
+        </LikesBackground>
+      </MessgeLikeButton>
+    );
+  }
+}
 export default Message;

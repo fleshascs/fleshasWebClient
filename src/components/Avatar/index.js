@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 const AvatarImg = styled.img`
   box-shadow: rgba(139, 139, 139, 0.32) 1px 1px 3px 0px;
-  height: 40px;
-  width: 40px;
+  height: ${props => props.size};
+  width: ${props => props.size};
   border-width: 2px;
   border-style: solid;
   border-color: rgb(255, 255, 255);
@@ -17,6 +17,23 @@ const AvatarImg = styled.img`
   }
 `;
 
-const Avatar = props => <AvatarImg src={props.imgUrl} />;
+const Avatar = props => (
+  <AvatarImg
+    size={getSize(props.size)}
+    className={` ${props.className}`}
+    src={props.imgUrl}
+  />
+);
 
 export default Avatar;
+
+function getSize(size) {
+  switch (size) {
+    case "small":
+      return "25px";
+    case "meddium":
+      return "85px";
+    default:
+      return "40px";
+  }
+}

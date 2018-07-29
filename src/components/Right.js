@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { UserBlock, Shoutbox } from "../components";
+import { connect } from "react-redux";
+
+import { UserBlock, LoginRegisterBlock, Shoutbox } from "../components";
 
 const Container = styled.div`
   height: 100%;
@@ -20,11 +22,13 @@ const BreakLine = styled.div`
 
 class Right extends Component {
   render() {
+    const { loggedIn } = this.props;
+
     return (
       <Container>
         <Wrapper>
           <div className="p-2">
-            <UserBlock />
+            {loggedIn ? <UserBlock /> : <LoginRegisterBlock />}
           </div>
           <BreakLine />
           <Shoutbox />
@@ -34,4 +38,10 @@ class Right extends Component {
   }
 }
 
-export default Right;
+function mapStateToProps(state) {
+  const { loggedIn } = state.authentication;
+  return {
+    loggedIn
+  };
+}
+export default connect(mapStateToProps)(Right);

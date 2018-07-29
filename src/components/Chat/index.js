@@ -1,25 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
 import Chat from "./ChatPopUp";
-
-/* const Container = styled.div`
-  align-items: flex-end;
-  display: flex;
-  float: left;
-  position: relative;
-  font-family: inherit;
-`;
-
-const PopUp = styled.div`
-  height: auto;
-  display: block;
-  bottom: 0;
-  display: none;
-  height: 335px;
-  position: absolute;
-  width: 100%;
-`;
-*/
 
 const Container = styled.div`
   display: flex;
@@ -36,15 +18,24 @@ const ContainerWrapper = styled.div`
 
 class ChatController extends Component {
   render() {
+    const { chatUsers } = this.props;
+
     return (
       <ContainerWrapper>
         <Container>
-          <Chat />
-          <Chat />
+          {chatUsers.map(userId => <Chat key={userId} userId={userId} />)}
         </Container>
       </ContainerWrapper>
     );
   }
 }
 
-export default ChatController;
+function mapStateToProps(state) {
+  const { chatUsers } = state.chat;
+
+  return {
+    chatUsers
+  };
+}
+
+export default connect(mapStateToProps)(ChatController);

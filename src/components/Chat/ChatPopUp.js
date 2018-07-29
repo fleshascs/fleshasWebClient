@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { Spinner } from "../../components";
+import { Spinner, Avatar } from "../../components";
 import axios from "axios";
-//https://www.npmjs.com/package/emoji-picker-react
 import EmojiButton from "./EmojiButton";
+import { chatActions } from "../../_actions";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import Message from "./Message";
+//https://www.npmjs.com/package/emoji-picker-react
 
 const ChatContainer = styled.div`
   margin-left: 10px;
@@ -51,6 +55,15 @@ const Input = styled.input`
     border: none;
   }
 `;
+const CloseButton = styled.button`
+  border: none;
+  padding: 0px;
+  background: none;
+
+  &:focus {
+    outline: none;
+  }
+`;
 
 class Chat extends Component {
   constructor(props) {
@@ -59,11 +72,20 @@ class Chat extends Component {
     this.state = {
       messages: [],
       loading: true,
-      loadingError: false
+      loadingError: false,
+      user: {
+        name: "",
+        avatar: ""
+      }
     };
 
     this.onEmojiSelect = this.onEmojiSelect.bind(this);
     this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
+    this.handleChatClose = this.handleChatClose.bind(this);
+  }
+
+  handleChatClose() {
+    this.props.dispatch(chatActions.closeChat(this.props.userId));
   }
 
   handleMessageSubmit(e) {
@@ -75,16 +97,48 @@ class Chat extends Component {
   onEmojiSelect(e) {
     console.log(e);
   }
+
+  getUserDetails(UserId) {
+    const URL = "http://fleshas.lt/infusions/shoutbox_panel/userData.php";
+
+    axios
+      .get(URL + "?userId=" + UserId)
+      .then(response => {
+        this.setState({
+          user: response.data.usersData[0],
+          messages: response.data.messages,
+          loading: false
+        });
+      })
+      .catch(error => {
+        this.setState({
+          loading: false,
+          loadingError: true
+        });
+      });
+  }
+
+  componentDidMount() {
+    this.getUserDetails(this.props.userId);
+  }
+
   render() {
     return (
       <ChatContainer>
         <PopUpContainer>
           <PopUpHeader>
-            testas testaitis
-            <i className="material-icons float-right">close</i>
+            <Avatar
+              imgUrl={this.state.user.avatar}
+              size="small"
+              className="mr-1"
+            />
+            {this.state.user.userName}
+            <CloseButton className="float-right" onClick={this.handleChatClose}>
+              <i className="material-icons">close</i>
+            </CloseButton>
           </PopUpHeader>
           <MessagesContainer>
-            {this.props.loading ? (
+            {this.state.loading ? (
               <Spinner />
             ) : (
               <Messages messages={this.state.messages} />
@@ -108,38 +162,27 @@ class Chat extends Component {
       </ChatContainer>
     );
   }
-
-  requestForChatMessages() {
-    const URL = "http://fleshas.lt/php/api/chat/messages/";
-    axios
-      .get(URL)
-      .then(response => {
-        if (response.data.messages) {
-          this.setState({
-            messages: response.data.messages,
-            loading: false
-          });
-          return;
-        }
-        throw "netinkama struktura";
-      })
-      .catch(error => {
-        this.setState({
-          loading: false,
-          loadingError: true
-        });
-      });
-  }
 }
 
-export default Chat;
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(
+      {
+        chatActions
+      },
+      dispatch
+    )
+  };
+}
+
+export default connect(mapDispatchToProps)(Chat);
 
 class Messages extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-    return <div>{this.props.messages.map(message => <div>zinute</div>)}</div>;
+    return (
+      <div>
+        {this.props.messages.map(message => <Message message={message} />)}
+      </div>
+    );
   }
 }

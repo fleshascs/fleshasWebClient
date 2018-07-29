@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Avatar } from "../../components";
+import { Avatar, Username } from "../../components";
 import { Link } from "react-router-dom";
 
 const StyledLink = styled(Link)`
@@ -61,9 +61,8 @@ const ServerListItem = props => (
         <Avatar imgUrl={props.user.avatar} />
       </Link>
       <div className="ml-2">
-        <Link to="/profile">
-          <Important>{props.user.username}</Important>
-        </Link>
+        <Username userId={1}>{props.user.username}</Username>
+
         <NotImportant>{props.postDate}</NotImportant>
       </div>
     </AuthorColumn>

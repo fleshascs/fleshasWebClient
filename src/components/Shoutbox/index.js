@@ -92,15 +92,13 @@ class ServerList extends Component {
       <Container>
         <ShoutboxContainer className="mt-2">
           <MessgesList>
-            {this.state.messages.map((server, index) => (
+            {this.state.messages.map((msg, index) => (
               <Message
-                name={server.username}
-                avatar={server.avatar}
-                message={server.msg}
-                id={index + 1 < 10 ? "0" + (index + 1) : index + 1}
-                map={server.map}
-                onlinePlayers={server.online}
-                maxOnlinePlayers={server.maxOnline}
+                userId={msg.userId}
+                name={msg.username}
+                avatar={msg.avatar}
+                message={msg.msg}
+                key={msg.msg}
               />
             ))}
           </MessgesList>
@@ -108,7 +106,6 @@ class ServerList extends Component {
             ref={el => {
               this.messagesEnd = el;
               this.scrollToBottom();
-              console.log("pamparam");
             }}
             className="pt-3"
           />

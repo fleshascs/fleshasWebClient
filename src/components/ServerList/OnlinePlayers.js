@@ -35,12 +35,16 @@ class OnlinePlayers extends Component {
   }
 
   requestForPlayersOnline() {
-    /*   const URL = `${REST_API_URL}?server_ip=${
+    const URL = `${REST_API_URL}?server_ip=${
       this.props.server.ip
-    }&server_port=${this.props.server.port}`; */
-    const URL = "http://fleshas.lt/php/api/servers/players/";
+    }&server_port=${this.props.server.port}`;
+    //const URL = "http://fleshas.lt/php/api/servers/players/";
     axios
-      .get(URL)
+      .get(URL, {
+        headers: {
+          "Access-Control-Allow-Origin": "*"
+        }
+      })
       .then(response => {
         if (response.data.players) {
           this.setState({

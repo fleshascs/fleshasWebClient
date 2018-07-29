@@ -3,14 +3,6 @@ import { userService } from "../_services";
 import { alertActions } from "./";
 import { history } from "../_helpers";
 
-export const userActions = {
-  login,
-  logout,
-  register,
-  getAll,
-  delete: _delete
-};
-
 function login(username, password) {
   return dispatch => {
     dispatch(request({ username }));
@@ -18,7 +10,7 @@ function login(username, password) {
     userService.login(username, password).then(
       user => {
         dispatch(success(user));
-        history.push("/");
+        //history.push("/");
       },
       error => {
         dispatch(failure(error.toString()));
@@ -117,3 +109,13 @@ function _delete(id) {
     return { type: userConstants.DELETE_FAILURE, id, error };
   }
 }
+
+const userActions = {
+  login,
+  logout,
+  register,
+  getAll,
+  delete: _delete
+};
+
+export default userActions;
