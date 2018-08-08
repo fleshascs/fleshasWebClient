@@ -22,13 +22,19 @@ const Logo = styled.div`
   font-size: 2em;
 `;
 
+const Top = styled.div`
+  background: ${props => props.theme.HEADER_TOP_COLOR};
+`;
+
 class Header extends Component {
   render() {
     return (
       <Container>
-        <div className="container">
-          <Logo>fleshas.lt</Logo>
-        </div>
+        <Top>
+          <div className="container">
+            <Logo>fleshas.lt</Logo>
+          </div>
+        </Top>
         <NavBar />
       </Container>
     );

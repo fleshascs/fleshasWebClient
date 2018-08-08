@@ -55,6 +55,7 @@ class ServerList extends Component {
       <Box>
         {this.state.servers.map((server, index) => (
           <ServerListItem
+            key={server.name}
             id={index + 1 < 10 ? "0" + (index + 1) : index + 1}
             name={server.name}
             map={server.map}

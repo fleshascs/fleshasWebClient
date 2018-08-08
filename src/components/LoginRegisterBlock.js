@@ -8,11 +8,19 @@ import { Link } from "react-router-dom";
 const Container = styled.div`
   display: flex;
   width: 100%;
-  padding-top: 30px;
-  padding-bottom: 30px;
+  padding-top: 3px;
+  padding-bottom: 3px;
 `;
 
-const StyledLoginButton = styled(Link)`
+const Column = styled.div`
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-right: 5px;
+  padding-left: 5px;
+`;
+
+const StyledButton = styled(Link)`
   padding: 9px;
   border-radius: 2px;
   color: #fff;
@@ -30,12 +38,12 @@ class LoginRegister extends Component {
   render() {
     return (
       <Container>
-        <div className="text-center col">
-          <StyledLoginButton to="/login">Prisijungti</StyledLoginButton>
-        </div>
-        <div className="text-center col">
-          <StyledLoginButton to="/register">Registruotis</StyledLoginButton>
-        </div>
+        <Column className="text-center d-flex">
+          <StyledButton to="/login">Prisijungti</StyledButton>
+        </Column>
+        <Column className="text-center d-flex">
+          <StyledButton to="/register">Registruotis</StyledButton>
+        </Column>
       </Container>
     );
   }

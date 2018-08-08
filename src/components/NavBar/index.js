@@ -89,8 +89,8 @@ class NavBar extends Component {
     return (
       <NavigationBar>
         <MenuList>
-          {Links.map(link => (
-            <MenuListItem key={link.to}>
+          {Links.map((link, index) => (
+            <MenuListItem key={link.to + index}>
               <NavLink
                 className="active"
                 to={link.to}

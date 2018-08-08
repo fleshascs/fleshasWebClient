@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Avatar, Username } from "../../components";
+import { shoutBoxService } from "../../_services";
 
 const MessageContainer = styled.div`
   margin-top: 0.3rem;
@@ -37,26 +38,10 @@ class Message extends Component {
     this.setState({ showPlayers: false });
   }
 
-  //sitas nebus reikalingas
-  getRandomInteger(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
-  //sitas irgi nebus reikalingas
-  getRandomLikes() {
-    const likes = this.getRandomInteger(-20, 10);
-    return likes > 0 ? likes : 0;
-  }
-
   render() {
-    const likes = this.getRandomLikes();
-
     return (
       <MessageContainer className="ml-2">
-        <Avatar
-          imgUrl={`http://fleshas.lt/images/avatars/${this.props.avatar}`}
-        />
+        <Avatar imgUrl={`${this.props.avatar}`} />
         <div className="ml-2 w-100">
           <div style={{ display: "flex" }}>
             <Username style={{ flex: 1 }} userId={this.props.userId}>
@@ -67,7 +52,7 @@ class Message extends Component {
             <MessageText
               dangerouslySetInnerHTML={{ __html: this.props.message }}
             />
-            <LikesButton likes={likes} />
+            <LikesButton likes={this.props.likes} />
           </MessageWrapper>
         </div>
       </MessageContainer>
@@ -115,21 +100,16 @@ class LikesButton extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      likes: this.props.likes
-    };
-
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick() {
-    this.setState(prevState => {
-      return { likes: prevState.likes + 1 };
-    });
+    console.log("do request ---like---");
+    shoutBoxService.likeMessage(this.props.id);
   }
 
   render() {
-    const likes = this.state.likes;
+    const likes = this.props.likes;
     const NumberOfLikesClass = likes <= 0 ? "hiddeAndTakeSpace" : "";
     return (
       <MessgeLikeButton

@@ -26,10 +26,6 @@ const Container = styled.div`
 `;
 
 class Middle extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return <Container>{this.props.children}</Container>;
   }

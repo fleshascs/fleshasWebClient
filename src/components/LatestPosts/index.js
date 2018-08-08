@@ -64,6 +64,7 @@ class ServerList extends Component {
             threadPosts={5}
             threadTilte="[Apklausa] H1Ro"
             threadCategory="Apie betka"
+            key={"asd" + index}
           />
         ))}
       </Box>

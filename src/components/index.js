@@ -12,10 +12,13 @@ export { default as ForumThreads } from "./ForumThreads";
 export { default as Forum } from "./Forum";
 export { default as Shoutbox } from "./Shoutbox";
 export { default as Chat } from "./Chat";
-export { default as EmojiButton } from "./Chat/EmojiButton";
+
 export { default as LoginRegisterBlock } from "./LoginRegisterBlock";
 
 export { default as Box } from "./Box";
 export { default as Avatar } from "./Avatar";
 export { default as Username } from "./Username";
 export { default as Spinner } from "./Spinner";
+
+export { default as EmojiButton } from "./Chat/EmojiButton";
+export { default as PhotoUploadButton } from "./Chat/PhotoUploadButton";

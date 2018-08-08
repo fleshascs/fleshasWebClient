@@ -53,12 +53,14 @@ const Input = styled.input`
   width: 100%;
   &:focus {
     border: none;
+    outline: none;
   }
 `;
 const CloseButton = styled.button`
   border: none;
   padding: 0px;
   background: none;
+  color: #e4e4e4;
 
   &:focus {
     outline: none;

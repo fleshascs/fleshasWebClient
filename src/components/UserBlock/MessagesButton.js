@@ -15,10 +15,14 @@ const MessagesButtonContainer = styled.div`
 
 const NumberOfMessages = styled.div`
   position: absolute;
-  top: -2px;
-  color: #fff;
-  left: 8px;
-  
+  top: -8px;
+  color: #ffffff;
+  background: #e24040;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  text-align: center;
+  left: 12px;
 }
 `;
 const MessagesListPreviewContainer = styled.div`
@@ -56,7 +60,8 @@ class MessagesButton extends Component {
         onMouseEnter={this.showPanel}
         onMouseLeave={this.hidePanel}
       >
-        <i className={classList}>chat_bubble</i>
+        <i className={classList}>mail_outline</i>
+
         <NumberOfMessages>{this.props.messagesCount}</NumberOfMessages>
         {this.state.showPlayers ? (
           <MessagesListPreviewContainer>
