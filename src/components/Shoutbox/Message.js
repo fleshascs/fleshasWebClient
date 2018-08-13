@@ -41,7 +41,9 @@ class Message extends Component {
   render() {
     return (
       <MessageContainer className="ml-2">
-        <Avatar imgUrl={`${this.props.avatar}`} />
+        <div>
+          <Avatar imgUrl={`${this.props.avatar}`} />
+        </div>
         <div className="ml-2 w-100">
           <div style={{ display: "flex" }}>
             <Username style={{ flex: 1 }} userId={this.props.userId}>
@@ -52,7 +54,7 @@ class Message extends Component {
             <MessageText
               dangerouslySetInnerHTML={{ __html: this.props.message }}
             />
-            <LikesButton likes={this.props.likes} />
+            <LikesButton likes={this.props.likes} id={this.props.id} />
           </MessageWrapper>
         </div>
       </MessageContainer>
@@ -104,7 +106,6 @@ class LikesButton extends Component {
   }
 
   handleClick() {
-    console.log("do request ---like---");
     shoutBoxService.likeMessage(this.props.id);
   }
 

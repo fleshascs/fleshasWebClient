@@ -13,7 +13,7 @@ const MessageContainer = styled.div`
 `;
 const MessageText = styled.div`
   color: #000;
-  background: #e2e2e2;
+  background: rgb(239, 239, 239);
   margin-left: 5px;
   border-radius: 10px;
   padding: 5px 8px 6px;

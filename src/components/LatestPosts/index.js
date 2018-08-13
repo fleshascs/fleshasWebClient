@@ -50,7 +50,7 @@ class ServerList extends Component {
     }
 
     return (
-      <Box>
+      <Box className={this.props.className}>
         <BoxHeader title="Naujausių temų sąrašas" />
         {this.state.servers.map((server, index) => (
           <Post

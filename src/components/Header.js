@@ -10,7 +10,6 @@ const Container = styled.header`
   left: -3px;
   right: -3px;
   top: 0;
-  padding: 0 3px 0 3px;
   font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #efefef;
   transition: all 0.3s ease, top 0.2s ease-in-out;

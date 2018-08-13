@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import OnlinePlayers from "./ServerList/UserInfoPopUp";
 
 const Important = styled.div`
-  font-size: 13px;
+  font-size: ${props => props.size};
   color: ${props => props.theme.PRIMARY_COLOR};
   font-weight: bold;
   cursor: pointer;
@@ -28,7 +28,7 @@ class Username extends Component {
   }
 
   showUserInfo() {
-    this.setState({ showUserInfo: true });
+    //this.setState({ showUserInfo: true });
   }
   hideUserInfo() {
     this.setState({ showUserInfo: false });
@@ -40,6 +40,7 @@ class Username extends Component {
         onClick={this.handleClick.bind(this)}
         onMouseEnter={this.showUserInfo.bind(this)}
         onMouseLeave={this.hideUserInfo.bind(this)}
+        size={this.props.size}
       >
         {this.props.children}
         {this.state.showUserInfo ? <OnlinePlayers server={1} /> : null}
@@ -51,6 +52,10 @@ class Username extends Component {
 Username.propTypes = {
   children: PropTypes.string,
   userId: PropTypes.number
+};
+
+Username.defaultProps = {
+  size: "13px"
 };
 
 function mapDispatchToProps(dispatch) {

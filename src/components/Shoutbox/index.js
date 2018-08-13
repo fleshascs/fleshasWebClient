@@ -5,6 +5,7 @@ import "./taiKasNepavykoSuStyledComponents.css";
 import io from "socket.io-client";
 import { shoutBoxService } from "../../_services";
 import shoutbox from "./shoutBox.css.js";
+import MoreMessagesToScroll from "./MoreMessagesToScroll";
 
 class ServerList extends Component {
   constructor(props) {
@@ -26,6 +27,7 @@ class ServerList extends Component {
     this.updateMessage = this.updateMessage.bind(this);
 
     this.messagesEnd = React.createRef();
+    this.scrollableBox = React.createRef();
   }
 
   onEmojiSelect(e) {
@@ -64,6 +66,7 @@ class ServerList extends Component {
       <shoutbox.Container>
         <shoutbox.ShoutboxContainer
           onScroll={this.handleScroll}
+          innerRef={this.scrollableBox}
           className="mt-2"
         >
           <shoutbox.MessgesList>
@@ -71,14 +74,12 @@ class ServerList extends Component {
           </shoutbox.MessgesList>
           <div ref={this.messagesEnd} className="pt-3" />
         </shoutbox.ShoutboxContainer>
-        {this.state.showScrollHelper ? (
-          <shoutbox.InfoMoreMessages
-            className="text-center py-3 mr-2 w-100"
-            onClick={() => this.scrollToElement(this.messagesEnd.current)}
-          >
-            Žemiau yra daugiau žinučių.
-          </shoutbox.InfoMoreMessages>
-        ) : null}
+
+        <MoreMessagesToScroll
+          show={this.state.showScrollHelper}
+          onClick={() => this.scrollToElement(this.messagesEnd.current)}
+        />
+
         <div className="mx-3 py-3">
           <shoutbox.Textarea
             className="w-100 textarea"
@@ -118,7 +119,6 @@ class ServerList extends Component {
   }
 
   renderMessage(msg) {
-    console.log(msg);
     return (
       <Message
         userId={parseInt(msg.user_id)}
@@ -126,8 +126,8 @@ class ServerList extends Component {
         name={msg.username}
         avatar={msg.user_avatar}
         message={msg.message}
-        id={msg.id}
-        key={msg.id}
+        id={msg.message_id}
+        key={msg.message_id}
       />
     );
   }
@@ -149,8 +149,9 @@ class ServerList extends Component {
     this.setState(prevState => {
       const newMessage = data.message;
       const index = prevState.messages.findIndex(
-        msg => msg.id === newMessage.id
+        msg => msg.message_id === parseInt(newMessage.id)
       );
+
       prevState.messages[index] = {
         ...prevState.messages[index],
         ...newMessage
@@ -181,11 +182,16 @@ class ServerList extends Component {
   }
 
   scrollToElement(el) {
-    el.scrollIntoView({
+    const scrollableBox = this.scrollableBox.current;
+    scrollableBox.scrollTo(0, scrollableBox.scrollHeight);
+
+    //su firefox visa body numesdavo zemyn
+    //su chrome veike
+    /*  el.scrollIntoView({
       behavior: "instant", //{ behavior: "smooth" }
       block: "end",
       inline: "nearest"
-    });
+    }); */
   }
 
   handleMessageChange(e) {
@@ -206,7 +212,6 @@ export default ServerList;
 //https://stackoverflow.com/questions/25974527/scroll-element-into-view-at-bottom-of-page
 
 /*
-window.scrollTo(0, 1000);
 
 shoutsScrollThem: function()
 	{

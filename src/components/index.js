@@ -19,6 +19,7 @@ export { default as Box } from "./Box";
 export { default as Avatar } from "./Avatar";
 export { default as Username } from "./Username";
 export { default as Spinner } from "./Spinner";
+export { default as AvatarUpload } from "./AvatarUpload";
 
 export { default as EmojiButton } from "./Chat/EmojiButton";
 export { default as PhotoUploadButton } from "./Chat/PhotoUploadButton";

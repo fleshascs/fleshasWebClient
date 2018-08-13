@@ -5,11 +5,11 @@ const AvatarImg = styled.img`
   box-shadow: rgba(139, 139, 139, 0.32) 1px 1px 3px 0px;
   height: ${props => props.size};
   width: ${props => props.size};
-  border-width: 2px;
+  border-width: 0px;
   border-style: solid;
   border-color: rgb(255, 255, 255);
   border-image: initial;
-  border-radius: 100%;
+  border-radius: 5px;
 
   &:hover {
     box-shadow: ${props => props.theme.AVATAR_HOWER_SHADOW_COLOR} 0px 0px 4px
@@ -22,6 +22,7 @@ const Avatar = props => (
     size={getSize(props.size)}
     className={` ${props.className}`}
     src={props.imgUrl}
+    onClick={props.onClick}
   />
 );
 
@@ -33,7 +34,9 @@ function getSize(size) {
       return "25px";
     case "meddium":
       return "85px";
+    case "big":
+      return "200px";
     default:
-      return "40px";
+      return "30px";
   }
 }

@@ -13,16 +13,35 @@ const MessagesButtonContainer = styled.div`
   }
 `;
 
-const NumberOfMessages = styled.div`
+const NumberOfMessages2 = styled.div`
   position: absolute;
   top: -8px;
   color: #ffffff;
-  background: #e24040;
+  background: ${props => props.theme.UNREAD_MESSAGES_COUNTER_BG_COLOR};
   border-radius: 50%;
   height: 20px;
   width: 20px;
   text-align: center;
   left: 12px;
+  line-height: 20px;
+}
+`;
+
+const NumberOfMessages = styled.div`
+position: absolute;
+top: -8px;
+border-radius: 50%;
+height: 20px;
+width: 20px;
+text-align: center;
+left: 12px;
+background: #fff;
+border-radius: 10px;
+box-shadow: 1px 1px 3px 0 #dadde1;
+color: #8d949e;
+font-weight: normal;
+line-height: 17px;
+border: 1px solid #f3f3f3;
 }
 `;
 const MessagesListPreviewContainer = styled.div`

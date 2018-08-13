@@ -6,7 +6,8 @@ import { UserBlock, LoginRegisterBlock, Shoutbox } from "../components";
 
 const Container = styled.div`
   height: 100%;
-  width: 22rem;
+  width: 22%;
+  max-width: 22rem;
   border-left: 1px solid #ccc5c5;
 `;
 

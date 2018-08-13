@@ -4,8 +4,12 @@ let shoutbox = {};
 
 shoutbox.ShoutboxContainer = styled.div`
   flex: 1;
-  overflow: auto;
+  overflow-y: auto;
   padding-top: 10px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 shoutbox.MessgesList = styled.div``;
 
@@ -14,6 +18,7 @@ shoutbox.Container = styled.div`
   flex-direction: column;
   flex: 1;
   position: relative;
+  overflow: auto; //sito reikejo del firefox
 `;
 shoutbox.SubmitButton = styled.button`
   background: ${props => props.theme.PRIMARY_COLOR};
@@ -35,14 +40,7 @@ shoutbox.SubmitButton = styled.button`
     background: #556c9a;
   }
 `;
-shoutbox.InfoMoreMessages = styled.div`
-  position: absolute;
-  bottom: 16%;
-  font-size: 0.8em;
-  color: #faf9fa;
-  background: rgba(0, 0, 0, 0.6);
-  cursor: pointer;
-`;
+
 shoutbox.Textarea = styled.textarea`
   border: 1px solid #dad7d7;
 `;

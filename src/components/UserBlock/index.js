@@ -3,9 +3,21 @@ import styled from "styled-components";
 import LogOutButton from "./LogOutButton";
 import MessagesButton from "./MessagesButton";
 import { Link } from "react-router-dom";
+import { AvatarUpload } from "../../components";
 
 const Container = styled.div`
   display: flex;
+`;
+
+const EditButton = styled.span`
+  background: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  font-size: 12px;
+  color: #e2e2e2;
+  width: 100%;
+  display: none;
 `;
 
 const AvatarWrapper = styled.div`
@@ -22,20 +34,15 @@ const AvatarWrapper = styled.div`
   height: 80px;
   overflow: hidden;
   border-width: 0px;
+  margin-right: 20px;
+
+  &:hover ${EditButton} {
+    display: block;
+  }
 `;
 
-const EditButton = styled.span`
-  background: rgba(0, 0, 0, 0.5);
-  text-align: center;
-  position: absolute;
-  bottom: 0;
-  font-size: 12px;
-  color: #e2e2e2;
-  width: 100%;
-`;
-
-const AvatarImg = styled.div`
-  background-image: url("${props => props.imgPath}");
+//background-image: url("${props => props.imgPath}");
+const AvatarImg = styled.img`
   width: 100%;
   height: 100%;
 `;
@@ -65,22 +72,26 @@ class UserBlock extends Component {
   render() {
     return (
       <Container>
-        <a href="#">
-          <AvatarWrapper>
-            <AvatarImg imgPath="http://fleshas.lt/images/avatars/img_0846_20160710_191617_1_1.jpg" />
+        <Link to="/settings" className="mr-3">
+          <AvatarUpload
+            src="http://fleshas.lt/images/avatars/giphy.gif"
+            size="meddium"
+          />
+          {/* <AvatarWrapper>
+            <AvatarImg src="http://fleshas.lt/images/avatars/giphy.gif" />
             <EditButton>Keisti</EditButton>
-          </AvatarWrapper>
-        </a>
+          </AvatarWrapper> */}
+        </Link>
 
         <UserMenuWrapper>
           <Username>fleshas.lt</Username>
           <Usermenu>
             <MessagesButton messagesCount={2} />
-            <Link to="/settings">
+            {/* <Link to="/settings">
               <i className="material-icons text-muted mr-3">
                 supervised_user_circle
               </i>
-            </Link>
+            </Link> */}
             <LogOutButton />
           </Usermenu>
         </UserMenuWrapper>

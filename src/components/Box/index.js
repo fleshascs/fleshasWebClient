@@ -9,7 +9,7 @@ const Box = styled.div`
 
 class BoxComponent extends Component {
   render() {
-    return <Box>{this.props.children}</Box>;
+    return <Box className={this.props.className}>{this.props.children}</Box>;
   }
 }
 

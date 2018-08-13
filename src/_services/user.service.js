@@ -7,6 +7,7 @@ const userService = {
   register,
   getAll,
   getById,
+  getMyDetails,
   update,
   delete: _delete
 };
@@ -52,6 +53,17 @@ function getById(id) {
   };
 
   return fetch(`${config.API_URL}/users/${id}`, requestOptions).then(
+    handleResponse
+  );
+}
+
+function getMyDetails() {
+  const requestOptions = {
+    method: "GET",
+    headers: authHeader()
+  };
+
+  return fetch(`${config.API_URL}/details`, requestOptions).then(
     handleResponse
   );
 }
