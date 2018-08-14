@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import Message from "./Message";
 import { Link } from "react-router-dom";
 import MoreMessagesToScroll from "../Shoutbox/MoreMessagesToScroll";
+import { chatService } from "../../_services";
 //https://www.npmjs.com/package/emoji-picker-react
 
 const ChatContainer = styled.div`
@@ -94,6 +95,7 @@ class Chat extends Component {
       loading: true,
       loadingError: false,
       showScrollHelper: false,
+      conversation: null,
       message: "",
       user: {
         name: "",
@@ -114,6 +116,7 @@ class Chat extends Component {
 
   componentDidMount() {
     this.getUserDetails(this.props.userId);
+    this.getConversationHistory();
     this.input.focus();
   }
 
@@ -131,7 +134,7 @@ class Chat extends Component {
       <ChatContainer>
         <PopUpContainer>
           <PopUpHeader>
-            <div>
+            <div className="d-flex">
               <Avatar
                 imgUrl={this.state.user.avatar}
                 size="small"
@@ -142,7 +145,7 @@ class Chat extends Component {
               </HeaderUsername>
 
               <CloseButton
-                className="material-icons float-right"
+                className="material-icons ml-auto"
                 onClick={this.handleChatClose}
               >
                 close
@@ -234,8 +237,15 @@ class Chat extends Component {
 
     if (this.state.message.length < 1) return false;
 
-    console.log("message submit");
-    alert("zinute issiusta...");
+    const data = {
+      message: this.state.message,
+      conversationId: this.state.conversation.id,
+      to: this.props.userId
+    };
+
+    //debugger;
+
+    chatService.sendMessage(data);
   }
 
   onEmojiSelect(e) {
@@ -249,17 +259,24 @@ class Chat extends Component {
       .get(URL + "?userId=" + UserId)
       .then(response => {
         this.setState({
-          user: response.data.usersData[0],
-          messages: response.data.messages,
-          loading: false
+          user: response.data.usersData[0]
         });
       })
       .catch(error => {
         this.setState({
-          loading: false,
           loadingError: true
         });
       });
+  }
+
+  getConversationHistory() {
+    chatService.GetConversationHistory().then(response => {
+      this.setState({
+        messages: response.messages.data,
+        conversation: response.conversation,
+        loading: false
+      });
+    });
   }
 }
 
@@ -283,8 +300,8 @@ class Messages extends Component {
     }
     return (
       <div className="mx-2">
-        {this.props.messages.map((message, index) => (
-          <Message message={message} key={message.message + index} />
+        {this.props.messages.map(message => (
+          <Message message={message} key={message.id} />
         ))}
       </div>
     );

@@ -2,6 +2,7 @@ import { userConstants } from "../_constants";
 import { userService } from "../_services";
 import { alertActions } from "./";
 import { history } from "../_helpers";
+import { store } from "../_helpers";
 
 function login(username, password) {
   return dispatch => {
@@ -63,6 +64,33 @@ function register(user) {
   }
 }
 
+function getMyDetails() {
+  return dispatch => {
+    //jeigu jau uzkrauta ATSAUKIAM
+    if (store.getState().authentication.user.id) {
+      alert("jau pakrauta");
+      return;
+    }
+
+    userService.getMyDetails().then(
+      user => {
+        dispatch(success(user));
+      },
+      error => {
+        dispatch(failure(error.toString()));
+      }
+    );
+  };
+
+  function success(user) {
+    return { type: userConstants.GET_MY_DETAILS_REQUEST, user: user.success };
+  }
+
+  function failure(error) {
+    return { type: userConstants.AUTH_FAILURE, error };
+  }
+}
+
 function getAll() {
   return dispatch => {
     dispatch(request());
@@ -115,6 +143,7 @@ const userActions = {
   logout,
   register,
   getAll,
+  getMyDetails,
   delete: _delete
 };
 

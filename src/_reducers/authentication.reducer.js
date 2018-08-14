@@ -18,8 +18,16 @@ export default function authentication(state = initialState, action) {
         loggingInFailed: false
       };
     case userConstants.LOGIN_FAILURE:
+    case userConstants.AUTH_FAILURE:
       return {
         loggingInFailed: true
+      };
+    case userConstants.GET_MY_DETAILS_REQUEST:
+      //debugger;
+      const userData = { user: { ...state.user, ...action.user } };
+      return {
+        ...state,
+        ...userData
       };
     case userConstants.LOGOUT:
       return {

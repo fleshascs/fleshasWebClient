@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { Avatar, Username } from "../../components";
 import { shoutBoxService } from "../../_services";
+import moment from "moment";
+import "moment/locale/lt";
 
 const MessageContainer = styled.div`
   margin-top: 0.3rem;
@@ -12,10 +14,19 @@ const MessageText = styled.div`
   flex: 1;
   font-size: 14px;
   color: #524e4e;
+  margin-right: 3px;
 `;
 const MessageWrapper = styled.div`
   display: flex;
   width: 100%;
+  position: relative;
+`;
+const MessageDate = styled.div`
+  font-size: 0.8em;
+  flex: 1;
+  text-align: right;
+  padding-right: 2em;
+  color: #afafaf;
 `;
 
 class Message extends Component {
@@ -49,11 +60,15 @@ class Message extends Component {
             <Username style={{ flex: 1 }} userId={this.props.userId}>
               {this.props.name}
             </Username>
+            <MessageDate className="ml-auto message-date">
+              {moment(
+                this.props.date || new Date(),
+                "YYYY-MM-DD HHmmss"
+              ).fromNow()}
+            </MessageDate>
           </div>
           <MessageWrapper className="MessageWrapper">
-            <MessageText
-              dangerouslySetInnerHTML={{ __html: this.props.message }}
-            />
+            <MessageText>{this.props.message}</MessageText>
             <LikesButton likes={this.props.likes} id={this.props.id} />
           </MessageWrapper>
         </div>
@@ -68,7 +83,9 @@ const MaterialLikeIcon = styled.span`
 `;
 
 const MessgeLikeButton = styled.button`
-  position: relative;
+  position: absolute;
+  top: 0;
+  right: 0;
   text-align: right;
   border: none;
   background: none;
@@ -76,6 +93,28 @@ const MessgeLikeButton = styled.button`
 
   &:focus {
     outline: none;
+  }
+
+  &:before {
+    content: "";
+    background: ${props => props.theme.PRIMARY_COLOR};
+    display: block;
+    position: absolute;
+    padding-top: 60%;
+    padding-left: 100%;
+    margin-left: -10px !important;
+    margin-top: 1px;
+    opacity: 0;
+    transition: all 0.8s;
+    border-radius: 10px;
+    z-index: -1;
+  }
+
+  &:active:before {
+    padding: 0;
+    margin: 0;
+    opacity: 1;
+    transition: 0s;
   }
 
   /* visibility: hidden; visibility: visible; */
@@ -112,9 +151,10 @@ class LikesButton extends Component {
   render() {
     const likes = this.props.likes;
     const NumberOfLikesClass = likes <= 0 ? "hiddeAndTakeSpace" : "";
+
     return (
       <MessgeLikeButton
-        className={`MessgeLikeButton ${likes > 0 ? "HasLikes" : ""}`}
+        className={`fadeMe MessgeLikeButton ${likes > 0 ? "HasLikes" : ""}`}
         onClick={this.handleClick}
       >
         <LikesBackground>

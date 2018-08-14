@@ -52,14 +52,15 @@ function getById(id) {
     headers: authHeader()
   };
 
-  return fetch(`${config.API_URL}/users/${id}`, requestOptions).then(
+  //http://185.80.128.99:9000/api/user?id=1
+  return fetch(`${config.API_URL}/user?id=${id}`, requestOptions).then(
     handleResponse
   );
 }
 
 function getMyDetails() {
   const requestOptions = {
-    method: "GET",
+    method: "POST",
     headers: authHeader()
   };
 

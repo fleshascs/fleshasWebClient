@@ -23,7 +23,9 @@ class ChatController extends Component {
     return (
       <ContainerWrapper>
         <Container>
-          {chatUsers.map(userId => <Chat key={userId} userId={userId} />)}
+          {chatUsers.map(userId => (
+            <Chat key={userId} userId={userId} />
+          ))}
         </Container>
       </ContainerWrapper>
     );

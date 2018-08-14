@@ -29,18 +29,18 @@ class Message extends Component {
   render() {
     const myUserId = 1;
 
-    if (myUserId == this.props.message.UserId) {
+    if (myUserId == this.props.message.user_id) {
       return (
         <MessageContainer style={{ justifyContent: "flex-end" }}>
-          <MyMessageText>{this.props.message.message}</MyMessageText>
+          <MyMessageText>{this.props.message.body}</MyMessageText>
         </MessageContainer>
       );
     }
 
     return (
       <MessageContainer>
-        <Important>{this.props.message.Name}</Important>
-        <MessageText>{this.props.message.message}</MessageText>
+        <Important>{this.props.message.sender.name}</Important>
+        <MessageText>{this.props.message.body}</MessageText>
       </MessageContainer>
     );
   }

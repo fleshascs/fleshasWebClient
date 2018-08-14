@@ -15,16 +15,15 @@ const EditButton = styled.span`
 
 const AvatarWrapper = styled.div`
   box-shadow: rgba(139, 139, 139, 0.32) 1px 1px 3px 0px;
-  height: 40px;
-  width: 40px;
+
   border-width: 2px;
   border-style: solid;
   border-color: rgb(255, 255, 255);
   border-image: initial;
   border-radius: 100%;
   position: relative;
-  width: 80px;
-  height: 80px;
+  height: ${props => props.size};
+  width: ${props => props.size};
   overflow: hidden;
   border-width: 0px;
 
@@ -42,10 +41,29 @@ const AvatarImg = styled(Avatar)`
 `;
 
 const AvatarUpload = props => (
-  <AvatarWrapper ClassName={props.className} onClick={props.onClick}>
+  <AvatarWrapper
+    ClassName={props.className}
+    onClick={props.onClick}
+    size={getSize(props.size)}
+  >
     <AvatarImg imgUrl={props.src} size={props.size} />
     <EditButton>Keisti</EditButton>
   </AvatarWrapper>
 );
 
 export default AvatarUpload;
+
+function getSize(size) {
+  switch (size) {
+    case "small":
+      return "25px";
+    case "meddium":
+      return "85px";
+    case "big":
+      return "200px";
+    case "60":
+      return "60px";
+    default:
+      return "30px";
+  }
+}

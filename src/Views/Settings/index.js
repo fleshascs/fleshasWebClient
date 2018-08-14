@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import { Avatar, AvatarUpload, Box } from "../../components";
 import styled from "styled-components";
+import { connect } from "react-redux";
+import { Redirect } from "react-router";
 
 const Button = styled.button`
   display: inline-flex;
   vertical-align: middle;
   align-items: center;
-  background-color: ${props => props.theme.PRIMARY_COLOR};
-  border-color: ${props => props.theme.PRIMARY_COLOR};
+  //background-color: ${props => props.theme.PRIMARY_COLOR};
+  //border-color: ${props => props.theme.PRIMARY_COLOR};
 `;
 
 const AvatarUpload2 = styled(Avatar)`
@@ -24,8 +26,8 @@ class Settings extends Component {
 
     this.state = {
       editMode: false,
-      name: "fleshas.lt",
-      email: "Thornton@asd.com",
+      avatar: "",
+      formEdited: false,
       skype: "live:qweqwewqewqe",
       steamId: "STEAM_0:1:9204252",
       steamVerified: false
@@ -33,8 +35,15 @@ class Settings extends Component {
 
     this.fileUpload = React.createRef();
     this.openFileUpload = this.openFileUpload.bind(this);
+    this.onAvatarChange = this.onAvatarChange.bind(this);
   }
   render() {
+    const { user, loggedIn } = this.props;
+
+    if (!loggedIn) {
+      return <Redirect to="/" />;
+    }
+
     return (
       <div
         style={{
@@ -51,34 +60,48 @@ class Settings extends Component {
           <div className="d-flex">
             <div>
               <AvatarUpload
-                src="http://fleshas.lt/images/avatars/giphy.gif"
+                src={this.state.avatar || user.avatar}
                 size="meddium"
                 onClick={this.openFileUpload}
               />
 
-              <FileUpload ref={this.fileUpload} />
+              <FileUpload
+                ref={this.fileUpload}
+                onAvatarChange={this.onAvatarChange}
+              />
             </div>
             <div className="col">
-              <Button
-                className="btn btn-primary float-right"
-                onClick={() => {
-                  this.setState({ editMode: !this.state.editMode });
-                }}
-              >
-                <i class="material-icons">edit</i> Redaguoti
-              </Button>
+              {this.state.formEdited ? (
+                <Button
+                  className="btn btn-success float-right"
+                  onClick={() => {
+                    this.setState({ editMode: !this.state.editMode });
+                  }}
+                >
+                  <i className="material-icons">done</i> Išsaugoti
+                </Button>
+              ) : (
+                <Button
+                  className="btn btn-primary float-right"
+                  onClick={() => {
+                    this.setState({ editMode: !this.state.editMode });
+                  }}
+                >
+                  <i className="material-icons">edit</i> Redaguoti
+                </Button>
+              )}
             </div>
           </div>
 
-          <table class="table mt-5">
+          <table className="table mt-5">
             <tbody>
               <tr>
                 <td className="text-muted">Vardas</td>
-                <td>{this.state.name}</td>
+                <td>{user.name}</td>
               </tr>
               <tr>
                 <td className="text-muted">El. paštas</td>
-                <td>{this.state.email}</td>
+                <td>{user.email}</td>
               </tr>
               <tr>
                 <td className="text-muted">Skype</td>
@@ -98,7 +121,8 @@ class Settings extends Component {
                   />
                   {!this.state.editMode ? (
                     <Button className="btn btn-primary float-right">
-                      <i class="material-icons">done</i> Patvirtinti su Steam
+                      <i className="material-icons">done</i> Patvirtinti su
+                      Steam
                     </Button>
                   ) : null}
                 </td>
@@ -108,14 +132,14 @@ class Settings extends Component {
 
           {this.state.editMode ? (
             <Button className="btn btn-primary float-right">
-              <i class="material-icons">done</i> Išsaugoti pakeitimus
+              <i className="material-icons">done</i> Išsaugoti pakeitimus
             </Button>
           ) : null}
 
           <h4 className="mt-5">Keisti slaptažodį</h4>
 
           <form>
-            <table class="table mt-5">
+            <table className="table mt-5">
               <tbody>
                 <tr>
                   <td>Prisijungimo slaptažodis</td>
@@ -143,12 +167,32 @@ class Settings extends Component {
     );
   }
 
+  onAvatarChange(event) {
+    const input = event.target;
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = e => {
+        this.setState({ avatar: e.target.result, formEdited: true });
+      };
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
   openFileUpload() {
     this.fileUpload.current.openFileUpload();
   }
 }
 
-export default Settings;
+function mapStateToProps(state) {
+  const { loggedIn, user } = state.authentication;
+  return {
+    loggedIn,
+    user
+  };
+}
+export default connect(mapStateToProps)(Settings);
 
 class EditMode extends Component {
   render() {
@@ -184,8 +228,22 @@ class FileUpload extends Component {
   render() {
     return (
       <Form enctype="multipart/form-data">
-        <input type="file" name="file" ref={this.input} />
+        <input
+          onChange={this.props.onAvatarChange}
+          type="file"
+          name="file"
+          ref={this.input}
+        />
       </Form>
     );
   }
 }
+
+/*     var formData = new FormData();
+var imagefile = document.querySelector('#file');
+formData.append("image", imagefile.files[0]);
+axios.post('upload_file', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+}) */

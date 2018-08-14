@@ -4,6 +4,9 @@ import LogOutButton from "./LogOutButton";
 import MessagesButton from "./MessagesButton";
 import { Link } from "react-router-dom";
 import { AvatarUpload } from "../../components";
+import { userActions } from "../../_actions";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 
 const Container = styled.div`
   display: flex;
@@ -65,26 +68,32 @@ const Usermenu = styled.div`
 `;
 
 class UserBlock extends Component {
-  constructor(props) {
-    super(props);
+  componentDidMount() {
+    //debugger;
+    if (this.props.auth.loggedIn) {
+      this.props.getMyDetails();
+    }
+    //console.log(this.props.userActions);
+    //dispatch(userActions.getMyDetails());
+    //console.log(this.props.loggedIn ? "loggedin" : "not logged in");
+    //debugger;
   }
 
   render() {
+    const userDetails = this.props.auth.user;
+    //console.log(userDetails);
     return (
       <Container>
         <Link to="/settings" className="mr-3">
-          <AvatarUpload
-            src="http://fleshas.lt/images/avatars/giphy.gif"
-            size="meddium"
-          />
+          <AvatarUpload src={userDetails.avatar} size="60" />
+
           {/* <AvatarWrapper>
             <AvatarImg src="http://fleshas.lt/images/avatars/giphy.gif" />
             <EditButton>Keisti</EditButton>
           </AvatarWrapper> */}
         </Link>
-
         <UserMenuWrapper>
-          <Username>fleshas.lt</Username>
+          <Username>{userDetails.name}</Username>
           <Usermenu>
             <MessagesButton messagesCount={2} />
             {/* <Link to="/settings">
@@ -100,4 +109,50 @@ class UserBlock extends Component {
   }
 }
 
-export default UserBlock;
+/* function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(
+      {
+        userActions
+      },
+      dispatch
+    )
+  };
+}
+
+export default connect(mapDispatchToProps)(UserBlock); */
+
+/* function mapStateToProps(state) {
+  const { loggedIn, ...other } = state.authentication;
+  return {
+    loggedIn,
+    other
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(userActions, dispatch)
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserBlock); */
+
+function mapStateToProps(state, props) {
+  return {
+    auth: state.authentication,
+    userActions: state.userActions
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(userActions, dispatch);
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserBlock);

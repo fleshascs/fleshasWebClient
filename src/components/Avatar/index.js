@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+//import ContentLoader from "react-content-loader";
 
 const AvatarImg = styled.img`
   box-shadow: rgba(139, 139, 139, 0.32) 1px 1px 3px 0px;
@@ -17,14 +18,26 @@ const AvatarImg = styled.img`
   }
 `;
 
-const Avatar = props => (
-  <AvatarImg
-    size={getSize(props.size)}
-    className={` ${props.className}`}
-    src={props.imgUrl}
-    onClick={props.onClick}
-  />
-);
+const PlaceHolder = styled.div`
+  background: #dbdcde;
+  height: ${props => props.size};
+  width: ${props => props.size};
+`;
+
+const Avatar = props => {
+  if (!props.imgUrl) {
+    return <PlaceHolder size={getSize(props.size)} />;
+  }
+
+  return (
+    <AvatarImg
+      size={getSize(props.size)}
+      className={` ${props.className}`}
+      src={props.imgUrl}
+      onClick={props.onClick}
+    />
+  );
+};
 
 export default Avatar;
 
@@ -36,7 +49,23 @@ function getSize(size) {
       return "85px";
     case "big":
       return "200px";
+    case "60":
+      return "60px";
     default:
       return "30px";
   }
 }
+
+/*
+https://github.com/danilowoz/react-content-loader
+http://danilowoz.com/create-content-loader/
+const AvatarPlaceHolder = () => (
+  <ContentLoader
+    height={80}
+    speed={1}
+    primaryColor={"#000"}
+    secondaryColor={"#efefef"}
+  >
+    <circle cx="30" cy="30" r="30" /> 
+  </ContentLoader>
+); */

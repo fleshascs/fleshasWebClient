@@ -6,8 +6,13 @@ import io from "socket.io-client";
 import { shoutBoxService } from "../../_services";
 import shoutbox from "./shoutBox.css.js";
 import MoreMessagesToScroll from "./MoreMessagesToScroll";
+import ContentLoader from "react-content-loader";
+//import { throttle } from "lodash";
 
-class ServerList extends Component {
+//const debounceWaitTime = 1000;
+//const debounceOptions = { leading: true, trailing: true };
+
+class ShoutboxComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -16,7 +21,8 @@ class ServerList extends Component {
       messages: [],
       messagesLoading: true,
       loadingError: false,
-      showScrollHelper: false
+      showScrollHelper: false,
+      soundEnabled: true
     };
 
     this.onEmojiSelect = this.onEmojiSelect.bind(this);
@@ -25,6 +31,7 @@ class ServerList extends Component {
     this.handleScroll = this.handleScroll.bind(this);
     this.addMessage = this.addMessage.bind(this);
     this.updateMessage = this.updateMessage.bind(this);
+    this.toggleSound = this.toggleSound.bind(this);
 
     this.messagesEnd = React.createRef();
     this.scrollableBox = React.createRef();
@@ -41,6 +48,11 @@ class ServerList extends Component {
     const socket = io("http://185.80.128.99:8080");
     socket.on("shoutbox::message", this.addMessage);
     socket.on("shoutbox::messageUpdated", this.updateMessage);
+
+    socket.on("chat::message", data => {
+      console.log(data);
+      alert("gavai zinute");
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -59,20 +71,34 @@ class ServerList extends Component {
     }
 
     if (this.state.messagesLoading) {
-      return <div>kraunasi...</div>;
+      return (
+        <div>
+          <ShoutsPlaceHolder />
+          <ShoutsPlaceHolder />
+          <ShoutsPlaceHolder />
+          <ShoutsPlaceHolder />
+          <ShoutsPlaceHolder />
+        </div>
+      );
     }
 
     return (
       <shoutbox.Container>
+        <div className="text-right mt-1 px-2" onClick={this.toggleSound}>
+          <i className="material-icons text-muted" style={{ fontSize: "18px" }}>
+            {this.state.soundEnabled ? "volume_up" : "volume_off"}
+          </i>
+        </div>
+        {/* onScroll={this.handleScroll} */}
+        {/* onScroll={this.throttledWindowHandler.bind(this)} */}
         <shoutbox.ShoutboxContainer
           onScroll={this.handleScroll}
           innerRef={this.scrollableBox}
-          className="mt-2"
         >
           <shoutbox.MessgesList>
             {this.state.messages.map(this.renderMessage)}
           </shoutbox.MessgesList>
-          <div ref={this.messagesEnd} className="pt-3" />
+          <div ref={this.messagesEnd} />
         </shoutbox.ShoutboxContainer>
 
         <MoreMessagesToScroll
@@ -101,6 +127,19 @@ class ServerList extends Component {
     );
   }
 
+  //https://codesandbox.io/s/04v892702v
+  /*  throttledWindowHandler = throttle(
+    this.handleScroll,
+    debounceWaitTime,
+    debounceOptions
+  ); */
+
+  toggleSound() {
+    this.setState((prevState, props) => {
+      return { soundEnabled: !prevState.soundEnabled };
+    });
+  }
+
   //tikriausiai reiktu prideti debounce
   handleScroll(e) {
     const containerHeight = e.target.offsetHeight;
@@ -126,6 +165,7 @@ class ServerList extends Component {
         name={msg.username}
         avatar={msg.user_avatar}
         message={msg.message}
+        date={msg.created_at}
         id={msg.message_id}
         key={msg.message_id}
       />
@@ -135,7 +175,9 @@ class ServerList extends Component {
   //gal reiketu perdet i shoutbox service ir i shoutbox componenta perduot nauja message lista
   //bet ar tada nereiktu turet kazkoki store
   addMessage(data) {
-    this.newMsgAudio.play();
+    if (this.state.soundEnabled) {
+      this.newMsgAudio.play();
+    }
 
     this.setState(prevState => {
       return {
@@ -204,7 +246,22 @@ class ServerList extends Component {
   }
 }
 
-export default ServerList;
+const ShoutsPlaceHolder = () => (
+  <ContentLoader
+    height={140}
+    speed={1}
+    primaryColor={"#fff"}
+    secondaryColor={"#efefef"}
+  >
+    {/* Pure SVG */}
+    <rect x="0" y="80" rx="3" ry="3" width="350" height="6.4" />
+    <rect x="0" y="100" rx="3" ry="3" width="380" height="6.4" />
+    <rect x="0" y="120" rx="3" ry="3" width="350" height="6.4" />
+    <rect x="0" y="140" rx="3" ry="3" width="380" height="6.4" />
+  </ContentLoader>
+);
+
+export default ShoutboxComponent;
 
 //https://bootsnipp.com/snippets/exR5v
 //https://medium.freecodecamp.org/how-to-build-a-chat-application-using-react-redux-redux-saga-and-web-sockets-47423e4bc21a
