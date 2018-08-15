@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { Avatar, Username, Box, LatestPosts } from "../../components";
 import { userService } from "../../_services";
-//import axios from "axios";
+import { withRouter } from "react-router-dom";
 //import { Link } from "react-router-dom";
-
 import { chatActions } from "../../_actions";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -18,30 +17,28 @@ class UserProfile extends Component {
     super(props);
 
     this.state = {
-      user_id: 1,
+      id: this.props.match.params.number, //bbz kas cia gavos
       avatar: "",
       name: ""
     };
     this.handleChatButton = this.handleChatButton.bind(this);
   }
 
-  handleChatButton() {
-    //prihardkodintas id
-    this.props.dispatch(chatActions.openChat(this.state.user_id));
+  //getUserDetails updatins userio info pagal userid
+  componentWillReceiveProps(nextProps) {
+    if (this.props.location.pathname !== nextProps.location.pathname) {
+      this.getUserDetails(nextProps.match.params.number);
+    }
   }
 
   componentWillMount() {
-    //tureciau gaut user id...
-    userService.getById(this.state.user_id).then(response => {
-      const user = response.success;
-      this.setState({ ...user });
-    });
+    this.getUserDetails(this.state.id);
   }
 
   render() {
     return (
       <div className="container mt-5">
-        <div className="row">
+        <div className="row mx-1">
           <ProfileAvatar
             imgUrl={this.state.avatar}
             size="big"
@@ -52,7 +49,7 @@ class UserProfile extends Component {
               {this.state.name}
             </Username>
             <br />
-            El. paštas: fleshas.lt <br /> Steam ID : STEAM_0:1:9204252
+            El. paštas: {this.state.email} <br /> Steam ID : STEAM_0:1:9204252
             <br />
             Skype : live:qwewqeaaa
             <br />
@@ -70,6 +67,17 @@ class UserProfile extends Component {
       </div>
     );
   }
+
+  handleChatButton() {
+    this.props.dispatch(chatActions.openChat(this.state.id));
+  }
+
+  getUserDetails(userId) {
+    userService.getById(userId).then(response => {
+      const user = response.success;
+      this.setState({ ...user });
+    });
+  }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -83,4 +91,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapDispatchToProps)(UserProfile);
+export default withRouter(connect(mapDispatchToProps)(UserProfile));

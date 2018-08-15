@@ -7,10 +7,15 @@ const chatService = {
   sendMessage
 };
 
-function GetConversationHistory(id) {
+function GetConversationHistory(conversationData) {
+  const data = new FormData();
+  data.set("conversationId", parseInt(conversationData.conversationId) || null);
+  data.set("to", parseInt(conversationData.to) || null);
+
   const requestOptions = {
     method: "POST",
-    headers: authHeader()
+    headers: authHeader(),
+    body: data
   };
 
   return fetch(`${config.API_URL}/GetConversationHistory`, requestOptions).then(

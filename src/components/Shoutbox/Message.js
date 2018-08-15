@@ -16,71 +16,6 @@ const MessageText = styled.div`
   color: #524e4e;
   margin-right: 3px;
 `;
-const MessageWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  position: relative;
-`;
-const MessageDate = styled.div`
-  font-size: 0.8em;
-  flex: 1;
-  text-align: right;
-  padding-right: 2em;
-  color: #afafaf;
-`;
-
-class Message extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showPlayers: false
-    };
-
-    this.showPlayersPanel = this.showPlayersPanel.bind(this);
-    this.hidePlayersPanel = this.hidePlayersPanel.bind(this);
-  }
-
-  showPlayersPanel() {
-    this.setState({ showPlayers: true });
-  }
-
-  hidePlayersPanel() {
-    this.setState({ showPlayers: false });
-  }
-
-  render() {
-    return (
-      <MessageContainer className="ml-2">
-        <div>
-          <Avatar imgUrl={`${this.props.avatar}`} />
-        </div>
-        <div className="ml-2 w-100">
-          <div style={{ display: "flex" }}>
-            <Username style={{ flex: 1 }} userId={this.props.userId}>
-              {this.props.name}
-            </Username>
-            <MessageDate className="ml-auto message-date">
-              {moment(
-                this.props.date || new Date(),
-                "YYYY-MM-DD HHmmss"
-              ).fromNow()}
-            </MessageDate>
-          </div>
-          <MessageWrapper className="MessageWrapper">
-            <MessageText>{this.props.message}</MessageText>
-            <LikesButton likes={this.props.likes} id={this.props.id} />
-          </MessageWrapper>
-        </div>
-      </MessageContainer>
-    );
-  }
-}
-
-const MaterialLikeIcon = styled.span`
-  padding: 3px;
-  font-size: 16px;
-`;
 
 const MessgeLikeButton = styled.button`
   position: absolute;
@@ -117,7 +52,85 @@ const MessgeLikeButton = styled.button`
     transition: 0s;
   }
 
-  /* visibility: hidden; visibility: visible; */
+  &:not(.HasLikes) {
+    display: none;
+  }
+`;
+
+const MessageWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  position: relative;
+
+  ${MessageWrapper}:hover > ${MessgeLikeButton} {
+    display: block;
+  }
+`;
+
+const MessageDate = styled.div`
+  font-size: 0.8em;
+  flex: 1;
+  text-align: right;
+  padding-right: 2em;
+  color: #afafaf;
+`;
+
+class Message extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showPlayers: false
+    };
+
+    this.showPlayersPanel = this.showPlayersPanel.bind(this);
+    this.hidePlayersPanel = this.hidePlayersPanel.bind(this);
+  }
+
+  showPlayersPanel() {
+    this.setState({ showPlayers: true });
+  }
+
+  hidePlayersPanel() {
+    this.setState({ showPlayers: false });
+  }
+
+  render() {
+    const { message } = this.props;
+
+    return (
+      <MessageContainer className="ml-2">
+        <div>
+          <Avatar imgUrl={`${message.user_avatar}`} />
+        </div>
+        <div className="ml-2 w-100">
+          <div style={{ display: "flex" }}>
+            <Username style={{ flex: 1 }} userId={message.user_id}>
+              {message.username}
+            </Username>
+            <MessageDate className="ml-auto message-date">
+              {moment(
+                message.date || new Date(),
+                "YYYY-MM-DD HHmmss"
+              ).fromNow()}
+            </MessageDate>
+          </div>
+          <MessageWrapper className="MessageWrapper">
+            <MessageText>{message.message}</MessageText>
+            <LikesButton
+              likes={this.props.message.likes}
+              id={message.message_id}
+            />
+          </MessageWrapper>
+        </div>
+      </MessageContainer>
+    );
+  }
+}
+
+const MaterialLikeIcon = styled.span`
+  padding: 3px;
+  font-size: 16px;
 `;
 
 const NumberOfLikes = styled.span`
@@ -137,6 +150,11 @@ const LikesBackground = styled.span`
   cursor: pointer;
 `;
 
+/* 
+.hiddeAndTakeSpace {
+  visibility: hidden;
+}
+*/
 class LikesButton extends Component {
   constructor(props) {
     super(props);
@@ -150,7 +168,6 @@ class LikesButton extends Component {
 
   render() {
     const likes = this.props.likes;
-    const NumberOfLikesClass = likes <= 0 ? "hiddeAndTakeSpace" : "";
 
     return (
       <MessgeLikeButton
@@ -159,7 +176,7 @@ class LikesButton extends Component {
       >
         <LikesBackground>
           <MaterialLikeIcon className="material-icons">😂</MaterialLikeIcon>
-          <NumberOfLikes className={NumberOfLikesClass}>{likes}</NumberOfLikes>
+          <NumberOfLikes>{likes}</NumberOfLikes>
         </LikesBackground>
       </MessgeLikeButton>
     );

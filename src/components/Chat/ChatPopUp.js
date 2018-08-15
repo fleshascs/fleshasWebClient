@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import Message from "./Message";
 import { Link } from "react-router-dom";
 import MoreMessagesToScroll from "../Shoutbox/MoreMessagesToScroll";
-import { chatService } from "../../_services";
+import { chatService, userService } from "../../_services";
 //https://www.npmjs.com/package/emoji-picker-react
 
 const ChatContainer = styled.div`
@@ -118,6 +118,22 @@ class Chat extends Component {
     this.getUserDetails(this.props.userId);
     this.getConversationHistory();
     this.input.focus();
+
+    this.props.dispatcher.on("message", data => {
+      //debugger;
+      if (
+        this.state.conversation &&
+        this.state.conversation.id != data.message.conversation_id
+      ) {
+        return;
+      }
+
+      this.setState((prevState, props) => {
+        return { messages: [...prevState.messages, data.message] };
+      });
+      console.log(data);
+      //debugger;
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -141,7 +157,7 @@ class Chat extends Component {
                 className="mr-1"
               />
               <HeaderUsername to={`/profile/${this.state.user.user_id}`}>
-                {this.state.user.userName}
+                {this.state.user.name}
               </HeaderUsername>
 
               <CloseButton
@@ -150,6 +166,12 @@ class Chat extends Component {
               >
                 close
               </CloseButton>
+            </div>
+            <div style={{ color: "#000" }}>
+              conversation id:
+              {this.state.conversation && this.state.conversation.id}
+              <br />
+              props.userId: {this.props.userId}
             </div>
           </PopUpHeader>
 
@@ -176,7 +198,7 @@ class Chat extends Component {
                 type="text"
                 placeholder="Parašyk žinutę..."
                 autoComplete="off"
-                name="message"
+                value={this.state.message}
                 onChange={e => {
                   this.setState({ message: e.target.value });
                 }}
@@ -239,11 +261,12 @@ class Chat extends Component {
 
     const data = {
       message: this.state.message,
-      conversationId: this.state.conversation.id,
-      to: this.props.userId
+      conversationId:
+        (this.state.conversation && this.state.conversation.id) || null,
+      to: this.props.userId || null
     };
 
-    //debugger;
+    this.setState({ message: "" });
 
     chatService.sendMessage(data);
   }
@@ -253,7 +276,14 @@ class Chat extends Component {
   }
 
   getUserDetails(UserId) {
-    const URL = "http://fleshas.lt/infusions/shoutbox_panel/userData.php";
+    userService.getById(UserId).then(response => {
+      const user = response.success;
+      this.setState({ user: user });
+
+      //debugger;
+    });
+
+    /*  const URL = "http://fleshas.lt/infusions/shoutbox_panel/userData.php";
 
     axios
       .get(URL + "?userId=" + UserId)
@@ -266,14 +296,25 @@ class Chat extends Component {
         this.setState({
           loadingError: true
         });
-      });
+      }); */
   }
 
   getConversationHistory() {
-    chatService.GetConversationHistory().then(response => {
+    const data = {
+      conversationId: this.state.conversation && this.state.conversation.id,
+      to: this.props.userId
+    };
+    chatService.GetConversationHistory(data).then(response => {
+      let whatEver = {};
+      if (response.messages) {
+        whatEver = {
+          messages: response.messages.data,
+          conversation: response.conversation
+        };
+      }
+
       this.setState({
-        messages: response.messages.data,
-        conversation: response.conversation,
+        ...whatEver,
         loading: false
       });
     });

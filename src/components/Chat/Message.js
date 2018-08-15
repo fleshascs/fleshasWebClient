@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
 
 const Important = styled.div`
   font-size: 13px;
@@ -27,9 +28,9 @@ const MyMessageText = MessageText.extend`
 
 class Message extends Component {
   render() {
-    const myUserId = 1;
+    const { user } = this.props;
 
-    if (myUserId == this.props.message.user_id) {
+    if (user.id == this.props.message.sender.id) {
       return (
         <MessageContainer style={{ justifyContent: "flex-end" }}>
           <MyMessageText>{this.props.message.body}</MyMessageText>
@@ -37,6 +38,7 @@ class Message extends Component {
       );
     }
 
+    console.log(this.props.message);
     return (
       <MessageContainer>
         <Important>{this.props.message.sender.name}</Important>
@@ -46,4 +48,10 @@ class Message extends Component {
   }
 }
 
-export default Message;
+function mapStateToProps(state) {
+  const { user } = state.authentication;
+  return {
+    user
+  };
+}
+export default connect(mapStateToProps)(Message);

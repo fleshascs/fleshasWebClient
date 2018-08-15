@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import { EmojiButton, PhotoUploadButton } from "../../components";
 import Message from "./Message";
-import "./taiKasNepavykoSuStyledComponents.css";
-import io from "socket.io-client";
 import { shoutBoxService } from "../../_services";
 import shoutbox from "./shoutBox.css.js";
 import MoreMessagesToScroll from "./MoreMessagesToScroll";
-import ContentLoader from "react-content-loader";
+import { socketConnect } from "socket.io-react";
+import ShoutsPlaceHolder from "./ShoutsPlaceHolder";
 //import { throttle } from "lodash";
 
 //const debounceWaitTime = 1000;
@@ -45,14 +44,8 @@ class ShoutboxComponent extends Component {
     this.newMsgAudio = new Audio("/sounds/newMessageShoutbox.mp3");
     this.requestForMessages();
 
-    const socket = io("http://185.80.128.99:8080");
-    socket.on("shoutbox::message", this.addMessage);
-    socket.on("shoutbox::messageUpdated", this.updateMessage);
-
-    socket.on("chat::message", data => {
-      console.log(data);
-      alert("gavai zinute");
-    });
+    this.props.socket.on("shoutbox::message", this.addMessage);
+    this.props.socket.on("shoutbox::messageUpdated", this.updateMessage);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -71,15 +64,7 @@ class ShoutboxComponent extends Component {
     }
 
     if (this.state.messagesLoading) {
-      return (
-        <div>
-          <ShoutsPlaceHolder />
-          <ShoutsPlaceHolder />
-          <ShoutsPlaceHolder />
-          <ShoutsPlaceHolder />
-          <ShoutsPlaceHolder />
-        </div>
-      );
+      return <ShoutsPlaceHolder />;
     }
 
     return (
@@ -141,6 +126,7 @@ class ShoutboxComponent extends Component {
   }
 
   //tikriausiai reiktu prideti debounce
+  //panasu kad sita galima buvo padaryt 3x trumpesni
   handleScroll(e) {
     const containerHeight = e.target.offsetHeight;
     const scrollableAreaHeight = e.target.scrollHeight;
@@ -157,19 +143,9 @@ class ShoutboxComponent extends Component {
     this.setState({ showScrollHelper });
   }
 
+  //reikejo i viena props imest message={msg}
   renderMessage(msg) {
-    return (
-      <Message
-        userId={parseInt(msg.user_id)}
-        likes={msg.likes}
-        name={msg.username}
-        avatar={msg.user_avatar}
-        message={msg.message}
-        date={msg.created_at}
-        id={msg.message_id}
-        key={msg.message_id}
-      />
-    );
+    return <Message likes={msg.likes} message={msg} key={msg.message_id} />;
   }
 
   //gal reiketu perdet i shoutbox service ir i shoutbox componenta perduot nauja message lista
@@ -226,14 +202,6 @@ class ShoutboxComponent extends Component {
   scrollToElement(el) {
     const scrollableBox = this.scrollableBox.current;
     scrollableBox.scrollTo(0, scrollableBox.scrollHeight);
-
-    //su firefox visa body numesdavo zemyn
-    //su chrome veike
-    /*  el.scrollIntoView({
-      behavior: "instant", //{ behavior: "smooth" }
-      block: "end",
-      inline: "nearest"
-    }); */
   }
 
   handleMessageChange(e) {
@@ -246,41 +214,4 @@ class ShoutboxComponent extends Component {
   }
 }
 
-const ShoutsPlaceHolder = () => (
-  <ContentLoader
-    height={140}
-    speed={1}
-    primaryColor={"#fff"}
-    secondaryColor={"#efefef"}
-  >
-    {/* Pure SVG */}
-    <rect x="0" y="80" rx="3" ry="3" width="350" height="6.4" />
-    <rect x="0" y="100" rx="3" ry="3" width="380" height="6.4" />
-    <rect x="0" y="120" rx="3" ry="3" width="350" height="6.4" />
-    <rect x="0" y="140" rx="3" ry="3" width="380" height="6.4" />
-  </ContentLoader>
-);
-
-export default ShoutboxComponent;
-
-//https://bootsnipp.com/snippets/exR5v
-//https://medium.freecodecamp.org/how-to-build-a-chat-application-using-react-redux-redux-saga-and-web-sockets-47423e4bc21a
-//https://stackoverflow.com/questions/37620694/how-to-scroll-to-bottom-in-react
-//https://stackoverflow.com/questions/25974527/scroll-element-into-view-at-bottom-of-page
-
-/*
-
-shoutsScrollThem: function()
-	{
-		var area = $( 'shoutbox-shouts' );
-
-		if ( ipb.shoutbox.shout_order == 'asc' )
-		{
-			area.scrollTop = area.scrollHeight - parseInt( area.getHeight() ) + 500;
-		}
-		else
-		{
-			area.scrollTop = 0;
-		}
-  },
- */
+export default socketConnect(ShoutboxComponent);
