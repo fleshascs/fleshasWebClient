@@ -1,6 +1,7 @@
 export { default as Header } from "./Header";
 export { default as Middle } from "./Middle";
 export { default as Right } from "./Right";
+export { default as Left } from "./Left";
 export { default as UserBlock } from "./UserBlock/index";
 export { default as Layout } from "./Layout";
 export { default as NewsBanner } from "./NewsBanner";
@@ -12,6 +13,7 @@ export { default as ForumThreads } from "./ForumThreads";
 export { default as Forum } from "./Forum";
 export { default as Shoutbox } from "./Shoutbox";
 export { default as Chat } from "./Chat";
+export { default as Login } from "./Login";
 
 export { default as LoginRegisterBlock } from "./LoginRegisterBlock";
 

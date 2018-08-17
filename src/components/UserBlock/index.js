@@ -7,6 +7,7 @@ import { AvatarUpload } from "../../components";
 import { userActions } from "../../_actions";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { chatService } from "../../_services";
 
 const Container = styled.div`
   display: flex;
@@ -68,15 +69,26 @@ const Usermenu = styled.div`
 `;
 
 class UserBlock extends Component {
+  state = {
+    unreadMessages: 0
+  };
   componentDidMount() {
     //debugger;
     if (this.props.auth.loggedIn) {
       this.props.getMyDetails();
+      this.countUnreadMessages();
     }
     //console.log(this.props.userActions);
     //dispatch(userActions.getMyDetails());
     //console.log(this.props.loggedIn ? "loggedin" : "not logged in");
     //debugger;
+  }
+
+  countUnreadMessages() {
+    chatService.countUnreadMessage().then(response => {
+      const msgNum = response.success;
+      this.setState({ unreadMessages: msgNum });
+    });
   }
 
   render() {
@@ -95,7 +107,7 @@ class UserBlock extends Component {
         <UserMenuWrapper>
           <Username>{userDetails.name}</Username>
           <Usermenu>
-            <MessagesButton messagesCount={2} />
+            <MessagesButton messagesCount={this.state.unreadMessages} />
             {/* <Link to="/settings">
               <i className="material-icons text-muted mr-3">
                 supervised_user_circle

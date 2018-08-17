@@ -28,27 +28,32 @@ class ChatController extends Component {
   }
 
   componentDidMount() {
-    this.newMsgAudio = new Audio("/sounds/sound_of_da_police.mp3");
+    this.newMsgAudio = new Audio("/sounds/steam_message_sound.mp3");
 
     this.props.socket.on("chat::message", data => {
-      this.newMsgAudio.play();
-      debugger;
-      //open chat popUp
-      this.props.openChat(data.message.sender.id);
+      //debugger;
+      if (data.message.sender.id !== this.props.user.id) {
+        this.newMsgAudio.play();
+        this.props.openChat(data.message);
+      }
       //inform chatPopUps about message
-      //chat popUp should filter out messages whith belongs to him by conversation id
+      //chat popUp should filter out messages which belongs to him by conversation id
       this.Dispatcher.dispatch("message", data);
     });
   }
 
   render() {
-    const { chatUsers } = this.props;
+    const { chatsOpened } = this.props;
 
     return (
       <ContainerWrapper>
         <Container>
-          {chatUsers.map(userId => (
-            <Chat key={userId} userId={userId} dispatcher={this.Dispatcher} />
+          {chatsOpened.map(chat => (
+            <Chat
+              key={JSON.stringify(chat)}
+              chat={chat}
+              dispatcher={this.Dispatcher}
+            />
           ))}
         </Container>
       </ContainerWrapper>
@@ -56,18 +61,10 @@ class ChatController extends Component {
   }
 }
 
-/* function mapStateToProps(state) {
-  const { chatUsers } = state.chat;
-
-  return {
-    chatUsers
-  };
-}
-export default socketConnect(connect(mapStateToProps,)(ChatController)); */
-
 function mapStateToProps(state, props) {
   return {
-    chatUsers: state.chat.chatUsers
+    chatsOpened: state.chat.chatsOpened,
+    user: state.authentication.user
   };
 }
 

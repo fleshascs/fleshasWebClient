@@ -12,9 +12,14 @@ import OnlinePlayers from "./ServerList/UserInfoPopUp";
 const Important = styled(Link)`
   font-size: ${props => props.size};
   color: ${props => props.theme.PRIMARY_COLOR};
-  font-weight: bold;
+  font-weight: ${props => (props.bold == true ? "bold" : "normal")};
   cursor: pointer;
   position: relative;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
 `;
 
 class Username extends Component {
@@ -44,6 +49,9 @@ class Username extends Component {
         onMouseLeave={this.hideUserInfo.bind(this)}
         size={this.props.size}
         to={`/profile/${this.props.userId}`}
+        className={`${this.props.className}`}
+        bold={this.props.bold == false ? false : true}
+        style={this.props.style}
       >
         {this.props.children}
         {this.state.showUserInfo ? <OnlinePlayers server={1} /> : null}

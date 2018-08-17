@@ -4,13 +4,15 @@ import userService from "./user.service";
 
 const chatService = {
   GetConversationHistory,
-  sendMessage
+  sendMessage,
+  countUnreadMessage
 };
 
 function GetConversationHistory(conversationData) {
   const data = new FormData();
-  data.set("conversationId", parseInt(conversationData.conversationId) || null);
-  data.set("to", parseInt(conversationData.to) || null);
+  data.set("conversationId", parseInt(conversationData.conversation_id) || "");
+  data.set("to", parseInt(conversationData.oponent_id) || "");
+  data.set("group_chat", +conversationData.group_chat);
 
   const requestOptions = {
     method: "POST",
@@ -26,8 +28,9 @@ function GetConversationHistory(conversationData) {
 function sendMessage(messageData) {
   const data = new FormData();
   data.set("message", messageData.message);
-  data.set("conversationId", parseInt(messageData.conversationId) || null);
-  data.set("to", parseInt(messageData.to) || null);
+  data.set("conversationId", parseInt(messageData.conversationId) || "");
+  data.set("to", parseInt(messageData.to) || "");
+  data.set("group_chat", +messageData.group_chat);
 
   const requestOptions = {
     method: "POST",
@@ -36,6 +39,17 @@ function sendMessage(messageData) {
   };
 
   return fetch(`${config.API_URL}/sendMessage`, requestOptions).then(
+    handleResponse
+  );
+}
+
+function countUnreadMessage() {
+  const requestOptions = {
+    method: "GET",
+    headers: authHeader()
+  };
+
+  return fetch(`${config.API_URL}/unreadMessages`, requestOptions).then(
     handleResponse
   );
 }

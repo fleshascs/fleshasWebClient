@@ -146,27 +146,41 @@ class ServerListItem extends Component {
     super(props);
 
     this.state = {
+      isHovering: false,
       showPlayers: false
     };
 
-    this.showPlayersPanel = this.showPlayersPanel.bind(this);
-    this.hidePlayersPanel = this.hidePlayersPanel.bind(this);
+    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
   }
 
-  showPlayersPanel() {
-    this.setState({ showPlayers: true });
+  tryToShowOnlinePlayers() {
+    //jeigu po 0.5s pele visdar ant sio componento
+    setTimeout(() => {
+      if (this.state.isHovering) {
+        this.setState({ showPlayers: true });
+      }
+    }, 500);
   }
 
-  hidePlayersPanel() {
-    this.setState({ showPlayers: false });
+  onMouseEnter() {
+    this.setState({ isHovering: true }, () => {
+      this.tryToShowOnlinePlayers();
+    });
+  }
+
+  onMouseLeave() {
+    this.setState({ isHovering: false }, () => {
+      this.setState({ showPlayers: false });
+    });
   }
 
   render() {
     //console.log(this.props.server);
     return (
       <ServerListItemContainer
-        onMouseEnter={this.showPlayersPanel}
-        onMouseLeave={this.hidePlayersPanel}
+        onMouseEnter={this.onMouseEnter}
+        onMouseLeave={this.onMouseLeave}
       >
         <SmallDataColumn>
           {this.props.id}

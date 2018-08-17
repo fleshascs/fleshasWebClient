@@ -6,7 +6,7 @@ const Container = styled.header`
   color: #fff;
   background: ${props => props.theme.PRIMARY_COLOR};
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.4);
-  z-index: 7777;
+  z-index: 1;
   left: -3px;
   right: -3px;
   top: 0;

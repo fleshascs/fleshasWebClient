@@ -10,12 +10,12 @@ const AvatarImg = styled.img`
   border-style: solid;
   border-color: rgb(255, 255, 255);
   border-image: initial;
-  border-radius: 5px;
+  border-radius:${props => (props.circle ? "50%" : "5px")};
 
-  &:hover {
+  /* &:hover {
     box-shadow: ${props => props.theme.AVATAR_HOWER_SHADOW_COLOR} 0px 0px 4px
       4px;
-  }
+  } */
 `;
 
 const PlaceHolder = styled.div`
@@ -26,7 +26,13 @@ const PlaceHolder = styled.div`
 
 const Avatar = props => {
   if (!props.imgUrl) {
-    return <PlaceHolder size={getSize(props.size)} />;
+    return (
+      <PlaceHolder
+        size={getSize(props.size)}
+        className={` ${props.className}`}
+        circle={props.circle}
+      />
+    );
   }
 
   return (
@@ -35,13 +41,14 @@ const Avatar = props => {
       className={` ${props.className}`}
       src={props.imgUrl}
       onClick={props.onClick}
+      circle={props.circle}
     />
   );
 };
 
 export default Avatar;
 
-function getSize(size) {
+function getSize(size = "30") {
   switch (size) {
     case "small":
       return "25px";
@@ -51,8 +58,10 @@ function getSize(size) {
       return "200px";
     case "60":
       return "60px";
-    default:
+    case "30":
       return "30px";
+    default:
+      return size + "px";
   }
 }
 

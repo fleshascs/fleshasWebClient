@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { Header, Middle, Right, Chat } from "../../components";
-
+import { Header, Middle, Right, Chat, Left } from "../../components";
+import { ModalContainer } from "../Modal";
 const Container = styled.div`
   display: flex;
   height: 100%;
@@ -22,6 +22,7 @@ class Layout extends Component {
   render() {
     return (
       <Container>
+        <Left />
         <Header />
         <ColumnsWrapper>
           <Middle>{this.props.children}</Middle>
@@ -30,6 +31,7 @@ class Layout extends Component {
         <Footer>
           <Chat />
         </Footer>
+        <ModalContainer />
       </Container>
     );
   }

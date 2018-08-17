@@ -1,10 +1,11 @@
 import { chatConstants } from "../_constants";
 
-function openChat(userId) {
-  return { type: chatConstants.OPEN_CHAT, userId };
+function openChat(chat) {
+  return { type: chatConstants.OPEN_CHAT, chat };
 }
-function closeChat(userId) {
-  return { type: chatConstants.CLOSE_CHAT, userId };
+
+function closeChat(chat) {
+  return { type: chatConstants.CLOSE_CHAT, chat };
 }
 
 const chatActions = {

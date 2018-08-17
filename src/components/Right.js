@@ -28,13 +28,6 @@ class Right extends Component {
     return (
       <Container>
         <Wrapper>
-          {/* <div>
-            <img
-              src="http://fleshas.lt/themes/izi/image/cs16download.gif"
-              style={{ width: "100%", height: "60px" }}
-              alt="Counter-Strike 1.6 Download"
-            />
-          </div> */}
           <BreakLine />
           <div className="p-2">
             {loggedIn ? <UserBlock /> : <LoginRegisterBlock />}

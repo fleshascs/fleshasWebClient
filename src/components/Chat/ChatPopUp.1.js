@@ -46,6 +46,20 @@ const MessagesContainer = styled.div`
   flex: 1;
 `;
 
+const InputContainer = styled.div`
+  border-top: 1px solid #ccc5c5;
+`;
+
+const Input = styled.input`
+  border-radius: 0px;
+  border: none;
+  padding-left: 7px;
+  width: 100%;
+  &:focus {
+    border: none;
+    outline: none;
+  }
+`;
 const CloseButton = styled.i`
   border: none;
   padding: 0px;
@@ -54,6 +68,14 @@ const CloseButton = styled.i`
 
   &:focus {
     outline: none;
+  }
+`;
+
+const SubmitIcon = styled.i`
+  color: ${props => props.theme.PRIMARY_COLOR};
+  filter: brightness(150%);
+  &:hover {
+    filter: brightness(300%);
   }
 `;
 
@@ -67,18 +89,24 @@ class Chat extends Component {
       loadingError: false,
       showScrollHelper: false,
       chat: this.props.chat,
-      users: [] //this conversation users list
+      users: [], //this conversation users list
+      message: ""
     };
 
+    this.onEmojiSelect = this.onEmojiSelect.bind(this);
+    this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
     this.handleChatClose = this.handleChatClose.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
+    this.submitButton = React.createRef();
     this.scrollableBox = React.createRef();
+    this.input = React.createRef();
   }
 
   componentDidMount() {
     this.getConversationHistory();
+    //this.input.focus();
 
     this.props.dispatcher.on("message", data => {
       let messageDirectedToThisChat = false;
@@ -165,6 +193,38 @@ class Chat extends Component {
             onClick={() => this.scrollToBottom()}
           />
           <ChatInput onSubmit={this.onSubmit} />
+          {/* <InputContainer>
+            <form onSubmit={this.handleMessageSubmit}>
+              <Input
+                type="text"
+                placeholder="Parašyk žinutę..."
+                autoComplete="off"
+                value={this.state.message}
+                onChange={e => {
+                  this.setState({ message: e.target.value });
+                }}
+                innerRef={el => {
+                  this.input = el;
+                }}
+              />
+              <input type="submit" ref={this.submitButton} className="d-none" />
+            </form>
+            <div className="d-flex">
+              <div>
+                <EmojiButton onEmojiSelect={this.onEmojiSelect} />
+              </div>
+              <div className="ml-auto">
+                {this.state.message ? (
+                  <SubmitIcon
+                    className="material-icons mr-1 fadeMe"
+                    onClick={() => this.submitButton.current.click()}
+                  >
+                    send
+                  </SubmitIcon>
+                ) : null}
+              </div>
+            </div>
+          </InputContainer> */}
         </PopUpContainer>
       </ChatContainer>
     );
@@ -195,6 +255,23 @@ class Chat extends Component {
     this.props.dispatch(chatActions.closeChat(this.state.chat));
   }
 
+  handleMessageSubmit(e) {
+    e.preventDefault();
+
+    if (this.state.message.length < 1) return false;
+
+    const data = {
+      message: this.state.message,
+      conversationId: this.state.chat.conversation_id,
+      to: this.state.chat.oponent_id,
+      group_chat: this.state.chat.group_chat
+    };
+
+    this.setState({ message: "" });
+
+    chatService.sendMessage(data);
+  }
+
   onSubmit(message) {
     const data = {
       message,
@@ -203,6 +280,12 @@ class Chat extends Component {
       group_chat: this.state.chat.group_chat
     };
     chatService.sendMessage(data);
+  }
+
+  onEmojiSelect(e) {
+    this.setState((prevState, props) => {
+      return { message: prevState.message + `:${e}:` };
+    });
   }
 
   getUserDetails(UserId) {

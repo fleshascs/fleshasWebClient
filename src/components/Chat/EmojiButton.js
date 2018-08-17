@@ -51,7 +51,8 @@ class EmojiButton extends Component {
     if (typeof this.props.onEmojiSelect === "function") {
       this.props.onEmojiSelect(e);
     }
-    console.log(e);
+
+    this.setState({ emojiPickerOpened: false });
   }
 
   onEmojiButtonClick() {
