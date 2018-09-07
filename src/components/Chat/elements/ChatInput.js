@@ -90,10 +90,12 @@ class ChatInput extends Component {
     this.setState({ message: "" });
   }
 
-  onEmojiSelect(e) {
+  onEmojiSelect(emoji) {
     this.setState((prevState, props) => {
-      return { message: prevState.message + `:${e}:` };
+      return { message: prevState.message + emoji };
     });
+
+    this.input.focus();
   }
 }
 

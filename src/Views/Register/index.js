@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import { userActions } from "../../_actions";
 import { Spinner } from "../../components";
 import { Redirect } from "react-router";
-import "./login.css";
+import "./register.css";
 
-class Login extends Component {
+class Register extends Component {
   constructor(props) {
     super(props);
 
@@ -49,14 +49,31 @@ class Login extends Component {
     return (
       <div className="login-container">
         <form className="login" onSubmit={this.handleSubmit}>
-          <legend className="legend">Prisijungti</legend>
+          <legend className="legend">Registruotis</legend>
           <div className="row">
             <div className="col">
               <fieldset>
                 <div className="input">
                   <input
                     type="text"
-                    placeholder="el. paštas"
+                    placeholder="El. paštas"
+                    name="username"
+                    value={username}
+                    onChange={this.handleChange}
+                  />
+                  <span className="icon">
+                    <i className="material-icons">mail_outline</i>
+                  </span>
+                </div>
+                {submitted &&
+                  !username && (
+                    <div className="help-block">Username is required</div>
+                  )}
+
+                <div className="input">
+                  <input
+                    type="text"
+                    placeholder="Naudotojo vardas"
                     name="username"
                     value={username}
                     onChange={this.handleChange}
@@ -73,14 +90,30 @@ class Login extends Component {
                 <div className="input">
                   <input
                     type="password"
-                    placeholder="Slaptažodis"
+                    placeholder="Jūsų slaptažodis"
                     name="password"
                     value={password}
                     onChange={this.handleChange}
                   />
                   <span className="icon">
                     <i className="material-icons">&#xE899;</i>
-                    {/* <i className="fa fa-lock" /> */}
+                  </span>
+                </div>
+                {submitted &&
+                  !password && (
+                    <div className="help-block">Password is required</div>
+                  )}
+
+                <div className="input">
+                  <input
+                    type="password"
+                    placeholder="Pakartoti slaptažodį"
+                    name="password"
+                    value={password}
+                    onChange={this.handleChange}
+                  />
+                  <span className="icon">
+                    <i className="material-icons">&#xE899;</i>
                   </span>
                 </div>
                 {submitted &&
@@ -96,7 +129,7 @@ class Login extends Component {
               </fieldset>
             </div>
             <div className="col">
-              <div className="connect">Connect with</div>
+              <div className="connect text-center">Arba prisijunk su</div>
 
               {loggingIn && <Spinner />}
               {loggingInFailed && (
@@ -126,5 +159,4 @@ function mapStateToProps(state) {
   };
 }
 
-const connectedLoginPage = connect(mapStateToProps)(Login);
-export { connectedLoginPage as Login };
+export default connect(mapStateToProps)(Register);

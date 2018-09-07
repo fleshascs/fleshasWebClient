@@ -1,7 +1,7 @@
 import { chatConstants } from "../_constants";
-import { parse } from "querystring";
+//import { parse } from "querystring";
 
-let chatsOpened = []; // JSON.parse(localStorage.getItem("chatsOpened"));
+let chatsOpened = JSON.parse(localStorage.getItem("chatsOpened"));
 const initialState = { chatsOpened: chatsOpened || [] };
 
 function findByOponent(chatsOpened, oponent_id) {
@@ -69,7 +69,7 @@ export default function chat(state = initialState, action) {
       }
 
       const chats = [...state.chatsOpened, chat];
-      //localStorage.setItem("chatsOpened", JSON.stringify(chats));
+      localStorage.setItem("chatsOpened", JSON.stringify(chats));
 
       return {
         ...state,

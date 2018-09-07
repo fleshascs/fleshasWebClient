@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Avatar, Username } from "./";
+import { socketConnect } from "socket.io-react";
 
 const LeftBar = styled.div`
   background: #06183c;
@@ -13,6 +14,7 @@ const LeftBar = styled.div`
   display: flex;
   flex-direction: column;
   text-align: center;
+  transition: width 0.25s;
 
   &.opened {
     width: 400px;
@@ -48,6 +50,16 @@ const CollapseButton = styled.div`
   }
 `;
 
+const OnlineUsersNum = styled.div`
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+  color: #90e65c;
+`;
+const OnlineUsersNumIcon = styled.i`
+  color: #90e65c;
+`;
+
 const fakeUsers = [
   {
     avatar: "http://fleshas.lt/images/avatars/img_0846_20160710_191617_1_1.jpg",
@@ -71,17 +83,38 @@ const fakeUsers = [
 
 class Left extends Component {
   state = {
-    opened: false
+    opened: false,
+    onlineUsersNum: 0
   };
+
+  componentDidMount() {
+    this.props.socket.on("usersOnlineNumber", onlineUsersNum => {
+      this.setState({ onlineUsersNum });
+    });
+  }
+
   render() {
     const { opened } = this.state;
     return (
       <LeftBar className={`${opened ? "opened" : ""}`}>
         <OnlineUsers>
           {fakeUsers.map(user => (
-            <OnlineUser user={user} leftBarOpened={opened} />
+            <OnlineUser
+              user={user}
+              leftBarOpened={opened}
+              key={JSON.stringify(user)}
+            />
           ))}
         </OnlineUsers>
+        {/*  <div>
+          <hr className="my-0" style={{ background: "#1e4aa7" }} />
+        </div>
+        <OnlineUsersNum>
+          <OnlineUsersNumIcon className="material-icons mb-3 mt-3 mx-auto">
+            people
+          </OnlineUsersNumIcon>
+          <span className="mx-auto">{this.state.onlineUsersNum}</span>
+        </OnlineUsersNum> */}
         <div>
           <hr className="my-0" style={{ background: "#1e4aa7" }} />
         </div>
@@ -114,7 +147,7 @@ class Left extends Component {
   }
 }
 
-export default Left;
+export default socketConnect(Left);
 
 const UserContainer = styled.div`
   display: inline-flex;

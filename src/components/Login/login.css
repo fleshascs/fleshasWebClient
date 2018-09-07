@@ -2,10 +2,6 @@
 
 https://cssauthor.com/html5-and-css3-login-forms/
 */
-.login-container {
-  height: 100%;
-  width: 100%;
-}
 
 .login-button-icon {
   position: relative;
@@ -56,10 +52,18 @@ https://cssauthor.com/html5-and-css3-login-forms/
   width: 100%;
   padding: 10px 5px 10px 40px;
   display: block;
-  border: 1px solid #ededed;
   border-radius: 4px;
   transition: 0.2s ease-out;
   color: darken(#ededed, 30%);
+  background: #232323 !important;
+  padding: 13px 25px;
+  color: #fff !important;
+  border: 1px solid #000;
+}
+
+input:-webkit-autofill {
+  //-webkit-text-fill-color: #fff !important;
+  -webkit-box-shadow: 0 0 0 30px #232323 inset;
 }
 
 .input input:focus {

@@ -34,10 +34,15 @@ class ShoutboxComponent extends Component {
 
     this.messagesEnd = React.createRef();
     this.scrollableBox = React.createRef();
+    this.input = React.createRef();
   }
 
-  onEmojiSelect(e) {
-    console.log(e);
+  onEmojiSelect(emoji) {
+    this.setState((prevState, props) => {
+      return { message: prevState.message + emoji };
+    });
+
+    this.input.focus();
   }
 
   componentWillMount() {
@@ -96,9 +101,12 @@ class ShoutboxComponent extends Component {
             className="w-100 textarea"
             onChange={this.handleMessageChange}
             value={this.state.message}
+            innerRef={el => {
+              this.input = el;
+            }}
           />
           <div className="d-flex">
-            <EmojiButton onEmojiClick={this.onEmojiSelect} />
+            <EmojiButton onEmojiSelect={this.onEmojiSelect} />
             <PhotoUploadButton />
             <shoutbox.SubmitButton
               className="ml-auto"

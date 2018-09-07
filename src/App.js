@@ -7,14 +7,15 @@ import { connect } from "react-redux";
 import { alertActions } from "./_actions";
 import { history } from "./_helpers";
 
+//import NotFound from "./Views/NotFound";
 import Home from "./Views/Home";
 import UserProfile from "./Views/UserProfile";
-//import NotFound from "./Views/NotFound";
 import Thread from "./Views/Thread";
 import Forum from "./Views/Forum";
-import ForumThreads from "./Views/ForumThreads";
-import { Login } from "./Views/Login";
+import Topics from "./Views/Topics";
+import Register from "./Views/Register";
 import Settings from "./Views/Settings";
+import ShoutBox from "./Views/ShoutBox";
 
 const theme = {
   PRIMARY_COLOR: "#27488a",
@@ -66,9 +67,10 @@ class App extends Component {
             <Route path="/profile/:number" component={UserProfile} />
             <Route path="/thread" component={Thread} />
             <Route exact path="/forum" component={Forum} />
-            <Route path="/forum/:number" component={ForumThreads} />
-            <Route path="/login" component={Login} />
+            <Route path="/forum/:number" component={Topics} />
+            <Route path="/register" component={Register} />
             <Route path="/settings" component={Settings} />
+            <Route path="/shoutbox" component={ShoutBox} />
             {/* <Route component={NotFound} /> */}
             {alert.message && (
               <div className={`alert ${alert.type}`}>{alert.message}</div>

@@ -51,11 +51,19 @@ class Login extends Component {
     }
 
     return (
-      <div style={{ minWidth: "300px" }}>
+      <div className="" style={{ minWidth: "400px", background: "#272727" }}>
+        <div className="w-100 d-flex py-3">
+          <img
+            style={{ width: "100px", height: "100px" }}
+            className="mx-auto"
+            src="https://192638-571855-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2017/08/viper-audio-production-flashbangstudio.png"
+          />
+        </div>
+
+        <h4 className="text-center mb-5 text-light">Prisijunk!</h4>
         {loggingInFailed && <div>Neteisingas el. pastas arba slaptažodis</div>}
         {loggedIn && <div>prisijungta</div>}
         <form onSubmit={this.handleSubmit}>
-          <legend className="legend">Prisijungti</legend>
           <fieldset>
             <div className="input">
               <input
@@ -64,6 +72,7 @@ class Login extends Component {
                 name="username"
                 value={username}
                 onChange={this.handleChange}
+                autoComplete={false}
               />
               <span className="icon">
                 <i className="material-icons">mail_outline</i>

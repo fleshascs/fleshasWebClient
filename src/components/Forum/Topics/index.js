@@ -1,14 +1,18 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Box } from "../../components";
-import Post from "./Thread";
+import Topic from "./Topic";
 import axios from "axios";
+import config from "../../config";
+import { withRouter } from "react-router-dom";
 
 class ServerList extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      category: {},
+      categoryId: this.props.match.params.number,
       threads: [],
       servsersLoading: true,
       loadingError: false
@@ -21,13 +25,14 @@ class ServerList extends Component {
 
   requestForThreads() {
     axios
-      .get(
-        "http://www.fleshas.lt/php/api/forum/forumThreads/?forum_id=4&rowstart=0"
-      )
+      .get(config.API_URL + "/category/" + this.state.categoryId)
       .then(response => {
-        if (response.data.threads) {
+        //console.log(response);
+        //debugger;
+        if (response.data.topics) {
           this.setState({
-            threads: response.data.threads,
+            category: response.data,
+            threads: response.data.topics,
             servsersLoading: false
           });
           return;
@@ -52,28 +57,15 @@ class ServerList extends Component {
     }
 
     return (
-      <Box>
-        <BoxHeader title="..." />
-        {this.state.threads.map((thread, index) => (
-          <Post
-            name={thread.thread_subject}
-            url="http://www.fleshas.lt"
-            user={{
-              username: "fleshas.lt",
-              avatar: "http://fleshas.lt/images/avatars/33944[1899].gif"
-            }}
-            author={{
-              username: "fleshas.lt",
-              avatar: "http://fleshas.lt/images/avatars/33944[1899].gif"
-            }}
-            postDate="Vakar"
-            views={thread.thread_views}
-            posts={thread.thread_postcount}
-            threadTilte="[Apklausa] H1Ro"
-            threadCategory="Apie betka"
-          />
-        ))}
-      </Box>
+      <div>
+        <BoxHeader>Pradžia / </BoxHeader>
+
+        <Box>
+          {this.state.threads.map((thread, index) => (
+            <Topic topic={thread} category={this.state.category} key={1} />
+          ))}
+        </Box>
+      </div>
     );
   }
 }
@@ -82,10 +74,10 @@ const BoxHeaderContainer = styled.div`
   padding-top: 15px;
   padding-bottom: 15px;
   padding-left: 24px;
-  border-bottom: 1px solid #e4e7ed;
+  /*  border-bottom: 1px solid #e4e7ed;
   border-top: 1px solid #e4e7ed;
-  background: #f7f7f7;
-  color: #9278de;
+  background: #f7f7f7; */
+  color: ${props => props.theme.PRIMARY_COLOR};
 `;
 
 const BoxHeaderTitle = styled.h4`
@@ -99,8 +91,8 @@ const BoxHeaderTitle = styled.h4`
 
 const BoxHeader = props => (
   <BoxHeaderContainer>
-    <BoxHeaderTitle>{props.title}</BoxHeaderTitle>
+    <BoxHeaderTitle>{props.children}</BoxHeaderTitle>
   </BoxHeaderContainer>
 );
 
-export default ServerList;
+export default withRouter(ServerList);

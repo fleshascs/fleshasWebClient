@@ -9,6 +9,7 @@ const Container = styled.div`
   width: 25%;
   max-width: 22rem;
   border-left: 1px solid #ccc5c5;
+  background: #fff;
 `;
 
 const Wrapper = styled.div`

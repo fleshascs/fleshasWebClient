@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "chart.js": "^2.7.2",
+    "emoji-mart": "^2.8.1",
     "emoji-picker-react": "^2.0.4",
     "firebase": "^5.0.4",
     "lodash": "^4.17.10",

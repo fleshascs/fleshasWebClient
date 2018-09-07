@@ -230,6 +230,7 @@ class Chat extends Component {
     );
   }
 
+
   handleScroll(e) {
     const containerHeight = e.target.offsetHeight;
     const scrollableAreaHeight = e.target.scrollHeight;

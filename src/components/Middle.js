@@ -5,12 +5,12 @@ const Container = styled.div`
   flex: 1;
   height: 100%;
   overflow: auto;
-  background-image: linear-gradient(
-    -226deg,
-    rgb(245, 248, 251) 0%,
-    rgb(243, 246, 249) 100%
-  );
-  padding-bottom: 50px;
+
+  @media (max-width: 1614px) and (min-width: 500px) {
+    padding-left: 60px;
+  }
+
+  //padding-bottom: 50px;
 
   &::-webkit-scrollbar {
     width: 0px;

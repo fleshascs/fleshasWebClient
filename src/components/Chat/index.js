@@ -18,6 +18,10 @@ const ContainerWrapper = styled.div`
   width: 80%;
   display: flex;
   position: relative;
+
+  @media (max-width: 1370px) {
+    width: 74%;
+  }
 `;
 
 class ChatController extends Component {

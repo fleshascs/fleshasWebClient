@@ -39,8 +39,8 @@ const StyledButton = styled(Link)`
 const LoginButton = styled.button`
   padding: 9px;
   border-radius: 2px;
-  color: #fff;
-  background: ${props => props.theme.PRIMARY_COLOR};
+  //color: #fff;
+  background: #fff;// ${props => props.theme.PRIMARY_COLOR};
   width: 100%;
   text-transform: uppercase;
   cursor: pointer;
@@ -49,6 +49,25 @@ const LoginButton = styled.button`
   &:hover {
     text-decoration: none;
     color: #fff;
+  }
+
+  -webkit-transition: all 200ms cubic-bezier(0.39, 0.5, 0.15, 1.36);
+  -moz-transition: all 200ms cubic-bezier(0.39, 0.5, 0.15, 1.36);
+  -ms-transition: all 200ms cubic-bezier(0.39, 0.5, 0.15, 1.36);
+  -o-transition: all 200ms cubic-bezier(0.39, 0.5, 0.15, 1.36);
+  transition: all 200ms cubic-bezier(0.39, 0.5, 0.15, 1.36);
+  display: block;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+  &color: rgba(30, 22, 54, 0.6);
+  box-shadow: rgba(39, 72, 138, 1) 0 0px 0px 2px inset;
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.85);
+    box-shadow: rgba(39, 72, 138, 1) 0 0px 0px 40px inset;
   }
 `;
 

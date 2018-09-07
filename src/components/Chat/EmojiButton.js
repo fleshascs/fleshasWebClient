@@ -1,7 +1,13 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 //https://www.npmjs.com/package/emoji-picker-react
-import EmojiPicker from "emoji-picker-react";
+//import EmojiPicker from "emoji-picker-react";
+
+//https://github.com/missive/emoji-mart
+//add custom emojis
+//https://github.com/missive/emoji-mart#custom-emojis
+import "emoji-mart/css/emoji-mart.css";
+import { Picker } from "emoji-mart";
 
 const EmojiContainer = styled.div`
   position: relative;
@@ -48,15 +54,16 @@ class EmojiButton extends Component {
   }
 
   onEmojiSelect(e) {
+    //console.log(e.native);
+
     if (typeof this.props.onEmojiSelect === "function") {
-      this.props.onEmojiSelect(e);
+      this.props.onEmojiSelect(e.native);
     }
 
     this.setState({ emojiPickerOpened: false });
   }
 
   onEmojiButtonClick() {
-    console.log("atidaryti");
     this.setState({ emojiPickerOpened: !this.state.emojiPickerOpened });
   }
 
@@ -71,7 +78,12 @@ class EmojiButton extends Component {
         </MaterialIconButton>
         {this.state.emojiPickerOpened ? (
           <EmojiPickerContainer>
-            <EmojiPicker onEmojiClick={this.onEmojiSelect} />
+            <Picker
+              onSelect={this.onEmojiSelect}
+              native={true}
+              emojiSize={18}
+            />
+            {/* <EmojiPicker onEmojiClick={this.onEmojiSelect} /> */}
           </EmojiPickerContainer>
         ) : null}
       </EmojiContainer>

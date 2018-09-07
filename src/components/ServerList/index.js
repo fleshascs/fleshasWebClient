@@ -113,8 +113,12 @@ const SmallDataColumn = styled.div`
   position: relative;
   width: 100%;
   min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
+`;
+
+const NumberColumn = SmallDataColumn.extend`
+  @media (max-width: 900px) {
+    display: none;
+  }
 `;
 
 const ServerNameColumn = styled.div`
@@ -182,12 +186,12 @@ class ServerListItem extends Component {
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
       >
-        <SmallDataColumn>
+        <NumberColumn>
           {this.props.id}
           {this.state.showPlayers ? (
             <OnlinePlayers server={this.props.server} />
           ) : null}
-        </SmallDataColumn>
+        </NumberColumn>
         <ServerNameColumn>
           <ServerNameContainer>
             <CircleOnlineStatus /> {this.props.name}
