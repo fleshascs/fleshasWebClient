@@ -10,7 +10,7 @@ import { history } from "./_helpers";
 //import NotFound from "./Views/NotFound";
 import Home from "./Views/Home";
 import UserProfile from "./Views/UserProfile";
-import Thread from "./Views/Thread";
+import Topic from "./Views/Topic";
 import Forum from "./Views/Forum";
 import Topics from "./Views/Topics";
 import Register from "./Views/Register";
@@ -65,7 +65,7 @@ class App extends Component {
           <Layout>
             <Route exact path="/" component={Home} />
             <Route path="/profile/:number" component={UserProfile} />
-            <Route path="/thread" component={Thread} />
+            <Route path="/thread/:number" component={Topic} />
             <Route exact path="/forum" component={Forum} />
             <Route path="/forum/:number" component={Topics} />
             <Route path="/register" component={Register} />

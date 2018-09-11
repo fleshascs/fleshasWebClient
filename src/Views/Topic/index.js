@@ -4,7 +4,7 @@ class Thread extends Component {
   render() {
     return (
       <div className="container" style={{ paddingTop: "10px" }}>
-        <Topics />
+        <Topic />
       </div>
     );
   }

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { Box } from "../../components";
-import Topic from "./Topic";
+import { Box, Spinner } from "../../../components";
+import Post from "./Post";
 import axios from "axios";
-import config from "../../config";
+import config from "../../../config";
 import { withRouter } from "react-router-dom";
 
 class ServerList extends Component {
@@ -12,8 +12,8 @@ class ServerList extends Component {
 
     this.state = {
       category: {},
-      categoryId: this.props.match.params.number,
-      threads: [],
+      topicId: this.props.match.params.number,
+      posts: [],
       servsersLoading: true,
       loadingError: false
     };
@@ -25,14 +25,15 @@ class ServerList extends Component {
 
   requestForThreads() {
     axios
-      .get(config.API_URL + "/topic/1/welcome-to-your-nodebb")
+      .get(config.API_URL + "/topic/" + this.state.topicId)
       .then(response => {
-        console.log(response);
+        console.log("----topic---");
+        console.log(response.data.posts);
         //debugger;
-        if (response.data.topics) {
+        if (response.data.posts) {
           this.setState({
             category: response.data,
-            threads: response.data.topics,
+            posts: response.data.posts,
             servsersLoading: false
           });
           return;
@@ -53,16 +54,16 @@ class ServerList extends Component {
     }
 
     if (this.state.servsersLoading) {
-      return <div>kraunasi...</div>;
+      return <Spinner />;
     }
 
     return (
       <div>
-        <BoxHeader>Pradžia / </BoxHeader>
+        <BoxHeader>Pradžia / Kategorija / welcome-to-your-nodebb</BoxHeader>
 
         <Box>
-          {this.state.threads.map((thread, index) => (
-            <Topic topic={thread} category={this.state.category} key={1} />
+          {this.state.posts.map((post, index) => (
+            <Post post={post} key={1} />
           ))}
         </Box>
       </div>

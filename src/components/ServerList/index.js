@@ -21,12 +21,13 @@ class ServerList extends Component {
   }
 
   requestForServers() {
+    ///.get("http://185.80.128.99/csserver/")
     axios
-      .get("http://185.80.128.99/csserver/")
+      .get("http://fleshas.lt/php/api/servers/")
       .then(response => {
-        if (response.data.servers) {
+        if (response.data) {
           this.setState({
-            servers: response.data.servers,
+            servers: response.data,
             servsersLoading: false
           });
           return;
@@ -57,10 +58,10 @@ class ServerList extends Component {
           <ServerListItem
             key={server.name}
             id={index + 1 < 10 ? "0" + (index + 1) : index + 1}
-            name={server.name}
+            name={server.name.replace("[Fleshas.lt]", "").replace("24/7", "")}
             map={server.map}
-            onlinePlayers={server.online}
-            maxOnlinePlayers={server.maxOnline}
+            onlinePlayers={server.activeplayers}
+            maxOnlinePlayers={server.maxplayers}
             server={server}
           />
         ))}

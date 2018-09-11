@@ -11,7 +11,7 @@ export { default as NavBar } from "./NavBar";
 export { default as MessagesListPreview } from "./MessagesListPreview";
 export { default as Topics } from "./Forum/Topics";
 export { default as Topic } from "./Forum/Topic";
-export { default as Forum } from "./Forum";
+export { default as Forum } from "./Forum/Categories";
 export { default as Shoutbox } from "./Shoutbox";
 export { default as Chat } from "./Chat";
 export { default as Login } from "./Login";

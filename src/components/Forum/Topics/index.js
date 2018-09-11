@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { Box } from "../../components";
+import { Box, Spinner } from "../../../components";
 import Topic from "./Topic";
 import axios from "axios";
-import config from "../../config";
+import config from "../../../config";
 import { withRouter } from "react-router-dom";
 
 class ServerList extends Component {
@@ -53,7 +53,7 @@ class ServerList extends Component {
     }
 
     if (this.state.servsersLoading) {
-      return <div>kraunasi...</div>;
+      return <Spinner />;
     }
 
     return (

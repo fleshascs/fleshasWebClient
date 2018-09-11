@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Avatar } from "../../components";
+import { Avatar } from "../../../components";
 import { Link } from "react-router-dom";
-import config from "../../config";
+import config from "../../../config";
 
 const Container = styled.div`
   display: flex;

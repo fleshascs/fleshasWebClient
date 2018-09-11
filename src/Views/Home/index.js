@@ -21,7 +21,7 @@ class Home extends Component {
           </div>
         </div>
 
-        <div className="row mt-2">
+        {/* <div className="row mt-2">
           <div className="col-sm-4 mb-3" style={{ paddingRight: "0px" }}>
             asd
           </div>
@@ -44,7 +44,7 @@ class Home extends Component {
               </div>
             </Box>
           </div>
-        </div>
+        </div> */}
       </div>
     );
   }
