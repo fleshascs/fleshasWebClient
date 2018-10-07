@@ -1,1 +1,1 @@
-http://fleshas.lt project website
+http://fleshas.lt project website made with React
