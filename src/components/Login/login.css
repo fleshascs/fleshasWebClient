@@ -52,7 +52,7 @@ https://cssauthor.com/html5-and-css3-login-forms/
   width: 100%;
   padding: 10px 5px 10px 40px;
   display: block;
-  border-radius: 4px;
+  border-radius: 0px;
   transition: 0.2s ease-out;
   color: darken(#ededed, 30%);
   background: #232323 !important;

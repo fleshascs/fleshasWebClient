@@ -47,98 +47,91 @@ class Register extends Component {
     }
 
     return (
-      <div className="login-container">
-        <form className="login" onSubmit={this.handleSubmit}>
-          <legend className="legend">Registruotis</legend>
-          <div className="row">
-            <div className="col">
-              <fieldset>
-                <div className="input">
-                  <input
-                    type="text"
-                    placeholder="El. paštas"
-                    name="username"
-                    value={username}
-                    onChange={this.handleChange}
-                  />
-                  <span className="icon">
-                    <i className="material-icons">mail_outline</i>
-                  </span>
-                </div>
-                {submitted &&
-                  !username && (
-                    <div className="help-block">Username is required</div>
-                  )}
+      <div className="container mt-5" style={{ width: "500px" }}>
+        <form className="" onSubmit={this.handleSubmit}>
+          <div>
+            <fieldset>
+              <div className="input">
+                <input
+                  type="text"
+                  placeholder="El. paštas"
+                  name="username"
+                  value={username}
+                  onChange={this.handleChange}
+                />
+                <span className="icon">
+                  <i className="material-icons">mail_outline</i>
+                </span>
+              </div>
+              {submitted &&
+                !username && (
+                  <div className="help-block">Username is required</div>
+                )}
 
-                <div className="input">
-                  <input
-                    type="text"
-                    placeholder="Naudotojo vardas"
-                    name="username"
-                    value={username}
-                    onChange={this.handleChange}
-                  />
-                  <span className="icon">
-                    <i className="material-icons">mail_outline</i>
-                  </span>
-                </div>
-                {submitted &&
-                  !username && (
-                    <div className="help-block">Username is required</div>
-                  )}
+              <div className="input">
+                <input
+                  type="text"
+                  placeholder="Naudotojo vardas"
+                  name="username"
+                  value={username}
+                  onChange={this.handleChange}
+                />
+                <span className="icon">
+                  <i className="material-icons">mail_outline</i>
+                </span>
+              </div>
+              {submitted &&
+                !username && (
+                  <div className="help-block">Username is required</div>
+                )}
 
-                <div className="input">
-                  <input
-                    type="password"
-                    placeholder="Jūsų slaptažodis"
-                    name="password"
-                    value={password}
-                    onChange={this.handleChange}
-                  />
-                  <span className="icon">
-                    <i className="material-icons">&#xE899;</i>
-                  </span>
-                </div>
-                {submitted &&
-                  !password && (
-                    <div className="help-block">Password is required</div>
-                  )}
+              <div className="input">
+                <input
+                  type="password"
+                  placeholder="Jūsų slaptažodis"
+                  name="password"
+                  value={password}
+                  onChange={this.handleChange}
+                />
+                <span className="icon">
+                  <i className="material-icons">&#xE899;</i>
+                </span>
+              </div>
+              {submitted &&
+                !password && (
+                  <div className="help-block">Password is required</div>
+                )}
 
-                <div className="input">
-                  <input
-                    type="password"
-                    placeholder="Pakartoti slaptažodį"
-                    name="password"
-                    value={password}
-                    onChange={this.handleChange}
-                  />
-                  <span className="icon">
-                    <i className="material-icons">&#xE899;</i>
-                  </span>
-                </div>
-                {submitted &&
-                  !password && (
-                    <div className="help-block">Password is required</div>
-                  )}
-
-                <button type="submit" className="submit">
-                  <i className="material-icons login-button-icon">
-                    keyboard_arrow_right
-                  </i>
+              <div className="input">
+                <input
+                  type="password"
+                  placeholder="Pakartoti slaptažodį"
+                  name="password"
+                  value={password}
+                  onChange={this.handleChange}
+                />
+                <span className="icon">
+                  <i className="material-icons">&#xE899;</i>
+                </span>
+              </div>
+              {submitted &&
+                !password && (
+                  <div className="help-block">Password is required</div>
+                )}
+              <div className="input">
+                <button type="submit" className="btn btn-success w-100">
+                  Registruotis
                 </button>
-              </fieldset>
-            </div>
-            <div className="col">
-              <div className="connect text-center">Arba prisijunk su</div>
-
-              {loggingIn && <Spinner />}
-              {loggingInFailed && (
-                <div>Neteisingas el. pastas arba slaptažodis</div>
-              )}
-
-              {loggedIn && <div>prisijungta</div>}
-            </div>
+              </div>
+            </fieldset>
           </div>
+
+          {loggingIn && <Spinner />}
+          {loggingInFailed && (
+            <div>Neteisingas el. pastas arba slaptažodis</div>
+          )}
+
+          {loggedIn && <div>prisijungta</div>}
 
           <div className="feedback">
             login successful <br />

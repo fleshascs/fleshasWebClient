@@ -3,7 +3,8 @@ import axios from "axios";
 import styled from "styled-components";
 import { Spinner } from "../../components";
 import OnlinePlayers from "./OnlinePlayers";
-//import ServerListItem from "./ServerListItem";
+import ServersPlaceHolder from "./ServersPlaceHolder";
+import ContentLoader from "react-content-loader";
 
 class ServerList extends Component {
   constructor(props) {
@@ -21,7 +22,6 @@ class ServerList extends Component {
   }
 
   requestForServers() {
-    ///.get("http://185.80.128.99/csserver/")
     axios
       .get("http://fleshas.lt/php/api/servers/")
       .then(response => {
@@ -49,7 +49,11 @@ class ServerList extends Component {
     }
 
     if (this.state.servsersLoading) {
-      return <div>kraunasi...</div>;
+      return (
+        <Box>
+          <ServersPlaceHolder />
+        </Box>
+      );
     }
 
     return (
@@ -58,7 +62,10 @@ class ServerList extends Component {
           <ServerListItem
             key={server.name}
             id={index + 1 < 10 ? "0" + (index + 1) : index + 1}
-            name={server.name.replace("[Fleshas.lt]", "").replace("24/7", "")}
+            name={
+              server.name &&
+              server.name.replace("[Fleshas.lt]", "").replace("24/7", "")
+            }
             map={server.map}
             onlinePlayers={server.activeplayers}
             maxOnlinePlayers={server.maxplayers}

@@ -6,7 +6,8 @@ import { store } from "./_helpers";
 import { Provider } from "react-redux";
 import { SocketProvider } from "socket.io-react";
 import io from "socket.io-client";
-const socket = io.connect("http://185.80.128.99:8080");
+import config from "./config";
+const socket = io.connect(config.ROOT_URL); //http://185.80.128.99:8080
 
 //import registerServiceWorker from "./registerServiceWorker";
 

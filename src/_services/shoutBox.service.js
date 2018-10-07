@@ -1,11 +1,9 @@
 import axios from "axios";
 import { authHeader } from "../_helpers";
+import config from "../config";
 
-const API_BASE_URL = "http://ts.fleshas.lt:9000/api";
-
-const NEW_MESSAGE_API_URL = API_BASE_URL + "/newMessageShoutbox";
-const LIKE_MESSAGE_API_URL = API_BASE_URL + "/likeMessageShoutbox";
-const NEWEST_MESSAGES_API_URL = API_BASE_URL + "/newestMessagesShoutbox";
+const NEW_MESSAGE_API_URL = config.API_URL + "/newMessageShoutbox";
+const LIKE_MESSAGE_API_URL = config.API_URL + "/likeMessageShoutbox";
 
 const shoutBoxService = {
   sendMessage,
@@ -26,9 +24,10 @@ function sendMessage(message) {
 //naujausiu zinuciu sarasas
 function getNewestMessages() {
   return axios
-    .get(NEWEST_MESSAGES_API_URL)
+    .get(config.API_URL + "/shoutbox")
     .then(result => {
-      //chech structure
+      //debugger;
+      //check structure
       if (!result.data.messages) {
         throw "netinkama struktura";
       }

@@ -4,6 +4,7 @@ import { Avatar, Username } from "../../components";
 import { shoutBoxService } from "../../_services";
 import moment from "moment";
 import "moment/locale/lt";
+import config from "../../config";
 
 const MessageContainer = styled.div`
   margin-top: 0.3rem;
@@ -95,32 +96,41 @@ class Message extends Component {
     this.setState({ showPlayers: false });
   }
 
+  //node bb shoutbox pluginas iwrapina zinute i <p>zinute</p> todel replacinam.
+  escapeHTML(html) {
+    return html.replace(/<(?:.|\n)*?>/gm, "");
+  }
+
+  messageDate(timestamp) {
+    return moment(new Date(timestamp), "YYYY-MM-DD HHmmss").fromNow();
+  }
+
+  messageContent(msg) {
+    return msg.deleted == 1
+      ? "<message deleted>"
+      : this.escapeHTML(msg.content);
+  }
+
   render() {
     const { message } = this.props;
+    const date = this.messageDate(message.timestamp);
+    const content = this.messageContent(message);
 
     return (
       <MessageContainer className="ml-2">
         <div>
-          <Avatar imgUrl={`${message.user_avatar}`} />
+          <Avatar imgUrl={config.ROOT_URL + message.user.picture} />
         </div>
         <div className="ml-2 w-100">
           <div style={{ display: "flex" }}>
-            <Username style={{ flex: 1 }} userId={message.user_id}>
-              {message.username}
+            <Username style={{ flex: 1 }} userId={message.user.uid}>
+              {message.user.username}
             </Username>
-            <MessageDate className="ml-auto message-date">
-              {moment(
-                message.date || new Date(),
-                "YYYY-MM-DD HHmmss"
-              ).fromNow()}
-            </MessageDate>
+            <MessageDate className="ml-auto message-date">{date}</MessageDate>
           </div>
           <MessageWrapper className="MessageWrapper">
-            <MessageText>{message.message}</MessageText>
-            <LikesButton
-              likes={this.props.message.likes}
-              id={message.message_id}
-            />
+            <MessageText>{content}</MessageText>
+            {/* <LikesButton likes={this.props.message.likes} id={message.sid} /> */}
           </MessageWrapper>
         </div>
       </MessageContainer>

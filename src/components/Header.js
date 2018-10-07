@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { NavBar } from "../components";
+import { connect } from "react-redux";
+import { NavBar, LoginRegisterBlock, UserBlock } from "../components";
 
 const Container = styled.header`
   color: #fff;
@@ -27,18 +28,15 @@ const Top = styled.div`
 
 class Header extends Component {
   render() {
+    const { loggedIn } = this.props;
     return (
       <Container>
         <Top>
-          <div className="container d-flex ">
-            {/* <div className="position-relative" style={{ marginRight: "100px" }}>
-              <img
-                style={{ width: "100px", height: "100px" }}
-                className="position-absolute"
-                src="https://192638-571855-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2017/08/viper-audio-production-flashbangstudio.png"
-              />
-            </div> */}
-            <Logo>fleshas.lt</Logo>
+          <div className="col d-flex">
+            <div className="container d-flex" style={{ marginRight: 0 }}>
+              <Logo>fleshas.lt</Logo>
+            </div>
+            <div>{loggedIn ? <UserBlock /> : <LoginRegisterBlock />}</div>
           </div>
         </Top>
         <NavBar />
@@ -47,4 +45,10 @@ class Header extends Component {
   }
 }
 
-export default Header;
+function mapStateToProps(state) {
+  const { loggedIn } = state.authentication;
+  return {
+    loggedIn
+  };
+}
+export default connect(mapStateToProps)(Header);

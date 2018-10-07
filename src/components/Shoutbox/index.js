@@ -47,10 +47,35 @@ class ShoutboxComponent extends Component {
 
   componentWillMount() {
     this.newMsgAudio = new Audio("/sounds/newMessageShoutbox.mp3");
-    this.requestForMessages();
+    //this.requestForMessages();
 
     this.props.socket.on("shoutbox::message", this.addMessage);
     this.props.socket.on("shoutbox::messageUpdated", this.updateMessage);
+
+    this.props.socket.on("event:shoutbox.delete", data => {
+      this.updateMessage({ ...data, deleted: 1 });
+    });
+
+    this.props.socket.emit("plugins.shoutbox.get", null, (error, messages) => {
+      let state = { messagesLoading: false };
+      if (error) {
+        state["loadingError"] = true;
+      } else {
+        //istrynus zinute nodebb grazina ja kaip nuscia objekta
+        //todel reikia prafiltruot
+        state["messages"] = messages.filter(msg => msg && msg.sid);
+      }
+
+      this.setState(state);
+    });
+
+    //gali buti kelios zinutes
+    this.props.socket.on("event:shoutbox.receive", messages => {
+      /* alert("asd");
+      debugger; */
+
+      messages.map(this.addMessage);
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -68,8 +93,15 @@ class ShoutboxComponent extends Component {
       return <div>ivyko klaida!</div>;
     }
 
+    let MessagesHTML = null;
     if (this.state.messagesLoading) {
-      return <ShoutsPlaceHolder />;
+      MessagesHTML = <ShoutsPlaceHolder />;
+    } else {
+      MessagesHTML = (
+        <shoutbox.MessgesList>
+          {this.state.messages.map(this.renderMessage)}
+        </shoutbox.MessgesList>
+      );
     }
 
     return (
@@ -85,9 +117,7 @@ class ShoutboxComponent extends Component {
           onScroll={this.handleScroll}
           innerRef={this.scrollableBox}
         >
-          <shoutbox.MessgesList>
-            {this.state.messages.map(this.renderMessage)}
-          </shoutbox.MessgesList>
+          {MessagesHTML}
           <div ref={this.messagesEnd} />
         </shoutbox.ShoutboxContainer>
 
@@ -153,29 +183,28 @@ class ShoutboxComponent extends Component {
 
   //reikejo i viena props imest message={msg}
   renderMessage(msg) {
-    return <Message likes={msg.likes} message={msg} key={msg.message_id} />;
+    return <Message likes={0} message={msg} key={msg.sid} />;
   }
 
   //gal reiketu perdet i shoutbox service ir i shoutbox componenta perduot nauja message lista
   //bet ar tada nereiktu turet kazkoki store
-  addMessage(data) {
+  addMessage(msg) {
     if (this.state.soundEnabled) {
       this.newMsgAudio.play();
     }
 
     this.setState(prevState => {
       return {
-        messages: [...prevState.messages, data.message]
+        messages: [...prevState.messages, msg]
       };
     });
   }
 
   //ta pati ka ir su addMessage
-  updateMessage(data) {
+  updateMessage(newMessage) {
     this.setState(prevState => {
-      const newMessage = data.message;
       const index = prevState.messages.findIndex(
-        msg => msg.message_id === parseInt(newMessage.id)
+        msg => msg.sid === parseInt(newMessage.sid)
       );
 
       prevState.messages[index] = {
@@ -190,7 +219,7 @@ class ShoutboxComponent extends Component {
   }
 
   //ta pati ka ir su addMessage
-  requestForMessages() {
+  /* requestForMessages() {
     shoutBoxService
       .getNewestMessages()
       .then(messages => {
@@ -205,7 +234,7 @@ class ShoutboxComponent extends Component {
           loadingError: true
         });
       });
-  }
+  } */
 
   scrollToElement(el) {
     const scrollableBox = this.scrollableBox.current;
@@ -217,7 +246,16 @@ class ShoutboxComponent extends Component {
   }
 
   handleMessageSubmit() {
-    shoutBoxService.sendMessage(this.state.message);
+    const msg = { message: this.state.message };
+
+    this.props.socket.emit("plugins.shoutbox.send", msg, (error, response) => {
+      if (error) {
+        alert("klaida siunciant zintue");
+        console.log(error);
+      }
+    });
+
+    /* shoutBoxService.sendMessage(this.state.message);*/
     this.setState({ message: "" });
   }
 }

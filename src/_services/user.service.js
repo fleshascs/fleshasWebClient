@@ -15,13 +15,24 @@ const userService = {
 function login(username, password) {
   const requestOptions = {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email: username, password: password })
+    // headers: { "Content-Type": "application/json" },
+    //body: JSON.stringify({ username: username, password: password })
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `username=${username}&password=${password}`
   };
 
-  return fetch(`${config.API_URL}/login`, requestOptions)
+  /*  fetch('http://localhost:4567/api/ns/login',{
+    method: "POST",
+   
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `username=fleshas.lt&password=dd123asd`
+  } ) */
+
+  return fetch(`${config.API_URL}/ns/login`, requestOptions)
     .then(handleResponse)
     .then(user => {
+      //dispatch({ type: userConstants.GET_MY_DETAILS_REQUEST, user: user });
+
       // login successful if there's a jwt token in the response
       if (user.success.token) {
         // store user details and jwt token in local storage to keep user logged in between page refreshes

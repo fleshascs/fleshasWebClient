@@ -12,7 +12,8 @@ import OnlinePlayers from "./ServerList/UserInfoPopUp";
 const Important = styled(Link)`
   font-size: ${props => props.size};
   color: ${props => props.theme.PRIMARY_COLOR};
-  font-weight: ${props => (props.bold == true ? "bold" : "normal")};
+  font-weight: ${props =>
+    props.bold === "true" || props.bold === true ? "bold" : "normal"};
   cursor: pointer;
   position: relative;
   text-decoration: none;
@@ -50,7 +51,7 @@ class Username extends Component {
         size={this.props.size}
         to={`/profile/${this.props.userId}`}
         className={`${this.props.className}`}
-        bold={this.props.bold == false ? false : true}
+        bold={this.props.bold}
         style={this.props.style}
       >
         {this.props.children}

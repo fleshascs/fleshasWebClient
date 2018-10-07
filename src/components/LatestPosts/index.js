@@ -3,29 +3,30 @@ import styled from "styled-components";
 import { Box } from "../../components";
 import Post from "./Post";
 import axios from "axios";
+import config from "../../config";
 
 class ServerList extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      servers: [],
+      topics: [],
       servsersLoading: true,
       loadingError: false
     };
   }
 
   componentWillMount() {
-    this.requestForServers();
+    this.requestForTopics();
   }
 
-  requestForServers() {
+  requestForTopics() {
     axios
-      .get("http://185.80.128.99/csserver/")
+      .get(config.API_URL + "/recent")
       .then(response => {
-        if (response.data.servers) {
+        if (response.data.topics) {
           this.setState({
-            servers: response.data.servers,
+            topics: response.data.topics,
             servsersLoading: false
           });
           return;
@@ -52,19 +53,19 @@ class ServerList extends Component {
     return (
       <Box className={this.props.className}>
         <BoxHeader title="Naujausių temų sąrašas" />
-        {this.state.servers.map((server, index) => (
+        {this.state.topics.map(topic => (
           <Post
-            url="http://www.fleshas.lt"
+            url={topic.slug}
             user={{
-              username: "fleshas.lt",
-              avatar: "http://fleshas.lt/images/avatars/chaga8j.gif"
+              username: topic.user.username,
+              avatar: config.ROOT_URL + topic.user.picture
             }}
-            postDate="Vakar"
-            threadViews={105}
-            threadPosts={5}
-            threadTilte="[Apklausa] H1Ro"
-            threadCategory="Apie betka"
-            key={"asd" + index}
+            postDate={topic.lastposttime}
+            threadViews={topic.viewcount}
+            threadPosts={topic.postcount}
+            threadTilte={topic.title}
+            threadCategory={topic.category.name}
+            key={topic.slug}
           />
         ))}
       </Box>

@@ -38,6 +38,10 @@ class Login extends Component {
     }
   }
 
+  closeModal = () => {
+    this.props.onCloseModal();
+  };
+
   render() {
     const { loggingIn, loggingInFailed, loggedIn } = this.props;
     const { username, password, submitted } = this.state;
@@ -51,14 +55,13 @@ class Login extends Component {
     }
 
     return (
-      <div className="" style={{ minWidth: "400px", background: "#272727" }}>
-        <div className="w-100 d-flex py-3">
-          <img
-            style={{ width: "100px", height: "100px" }}
-            className="mx-auto"
-            src="https://192638-571855-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2017/08/viper-audio-production-flashbangstudio.png"
-          />
-        </div>
+      <div
+        className="py-3"
+        style={{ minWidth: "400px", background: "#272727" }}
+      >
+        <button class="btn btn-primary" onClick={this.closeModal}>
+          X
+        </button>
 
         <h4 className="text-center mb-5 text-light">Prisijunk!</h4>
         {loggingInFailed && <div>Neteisingas el. pastas arba slaptažodis</div>}

@@ -38,7 +38,13 @@ class UserProfile extends Component {
   render() {
     return (
       <div className="container mt-5">
-        <div className="row mx-1">
+        <div
+          className="row mx-1"
+          style={{
+            background: "rgba(16, 8, 8, 0.1)",
+            padding: "7px"
+          }}
+        >
           <ProfileAvatar
             imgUrl={this.state.avatar}
             size="big"

@@ -12,6 +12,7 @@ const Container = styled.div`
   width: 100%;
   padding-top: 3px;
   padding-bottom: 3px;
+  font-size: 14px;
 `;
 
 const Column = styled.div`
@@ -26,9 +27,10 @@ const StyledButton = styled(Link)`
   padding: 9px;
   border-radius: 2px;
   color: #fff;
-  background: ${props => props.theme.PRIMARY_COLOR};
+  background: #ff5c5c;
   width: 100%;
   text-transform: uppercase;
+  border: 2px solid #f37272;
 
   &:hover {
     text-decoration: none;
@@ -39,12 +41,12 @@ const StyledButton = styled(Link)`
 const LoginButton = styled.button`
   padding: 9px;
   border-radius: 2px;
-  //color: #fff;
-  background: #fff;// ${props => props.theme.PRIMARY_COLOR};
+  color: #fff;
+  background: ${props => props.theme.PRIMARY_COLOR};
   width: 100%;
   text-transform: uppercase;
   cursor: pointer;
-  border: none;
+  border: 2px solid #2d79cc;
 
   &:hover {
     text-decoration: none;
@@ -111,7 +113,11 @@ class LoginRegister extends Component {
             <Modal>
               <EditWindowBox>
                 <Box>
-                  <Login />
+                  <Login
+                    onCloseModal={() =>
+                      this.setState({ loginModalOpenend: false })
+                    }
+                  />
                 </Box>
               </EditWindowBox>
             </Modal>

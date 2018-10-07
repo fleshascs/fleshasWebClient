@@ -14,7 +14,7 @@ const LeftBar = styled.div`
   display: flex;
   flex-direction: column;
   text-align: center;
-  transition: width 0.25s;
+  //transition: width 0.25s;
 
   &.opened {
     width: 400px;

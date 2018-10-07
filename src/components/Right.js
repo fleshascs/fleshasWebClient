@@ -30,9 +30,9 @@ class Right extends Component {
       <Container>
         <Wrapper>
           <BreakLine />
-          <div className="p-2">
+          {/*  <div className="p-2">
             {loggedIn ? <UserBlock /> : <LoginRegisterBlock />}
-          </div>
+          </div> */}
           <BreakLine />
           <Shoutbox />
         </Wrapper>

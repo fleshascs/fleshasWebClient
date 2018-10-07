@@ -55,7 +55,7 @@ const ThreadCategory = styled.div`
 `;
 
 const ServerListItem = props => (
-  <StyledLink to="/thread">
+  <StyledLink to={`/thread/${props.url}`}>
     <AuthorColumn>
       <Avatar imgUrl={props.user.avatar} />
 
